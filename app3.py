@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
 import base64
+from flask_cors import CORS
 from script.encrypt_aes import encrypt_file_aes 
 from script.decrypt_aes import decrypt_file_aes 
 from script.encrypt_chacha20 import encrypt_file_chacha20 
 from script.decrypt_chacha20 import decrypt_file_chacha20 
+
 app = Flask(__name__)
+CORS(app)
 
 UPLOAD_FOLDER = "/home/amogh/Downloads/temp/try_api/uploads"
 ENCRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/encrypted"
@@ -87,7 +90,6 @@ def decrypt_file():
     # Save encrypted file to encrypted/
     encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename)
     file.save(encrypted_path)
-    algorithm= 'aes'
     try:
         if algorithm == 'aes':
             decrypted_path = decrypt_file_aes(encrypted_path, key, iv_or_nonce)

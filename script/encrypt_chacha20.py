@@ -6,10 +6,7 @@ import base64
 def encrypt_file_chacha20(file):
     try:
         key = os.urandom(32)  # 32-byte key for ChaCha20
-        nonce = os.urandom(16)  # 12-byte nonce (corrected) 
-
-        print(f"Key (Base64): {base64.b64encode(key).decode()}")  # Debugging
-        print(f"Nonce (Base64): {base64.b64encode(nonce).decode()}")  # Debugging
+        nonce = os.urandom(16)  # 16-byte nonce for ChaCha20
 
         algorithm = algorithms.ChaCha20(key, nonce)
         cipher = Cipher(algorithm, mode=None, backend=default_backend())
@@ -24,5 +21,4 @@ def encrypt_file_chacha20(file):
             "nonce": base64.b64encode(nonce).decode()
         }
     except Exception as e:
-        print(f"Error: {str(e)}")  # Print actual error
         return {"error": f"Encryption failed: {str(e)}"}

@@ -4,13 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChaCha20 File Encryption & Decryption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        input[type="file"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #encryption-details, #decryption-details {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #007B9A;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>Encrypt a File with ChaCha20</h2>
-        <input type="file" id="fileInput">
+        <input type="file" id="encryptFileInput">
         <button id="encryptButton">Encrypt</button>
-        <p id="encryption-details"></p>
+        <div id="encryption-details"></div>
         <a id="download-link" style="display: none;" download>Download Encrypted File</a>
     </div>
 
@@ -20,9 +75,10 @@
         <input type="text" id="decryptKey" placeholder="Enter Key">
         <input type="text" id="decryptNonce" placeholder="Enter Nonce">
         <button id="decryptButton">Decrypt</button>
+        <div id="decryption-details"></div>
         <a id="decrypt-download-link" style="display: none;" download>Download Decrypted File</a>
     </div>
 
-    <script src="static/chacha20_interface.js"></script>
+    <script src="/static/chacha20_interface.js"></script>
 </body>
 </html>
