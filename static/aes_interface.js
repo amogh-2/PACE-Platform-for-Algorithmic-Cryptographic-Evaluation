@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       const formData = new FormData();
       formData.append('file', file);
-  
+
       fetch('/encrypt', {
         method: 'POST',
         body: formData

@@ -3,6 +3,8 @@ import os
 import base64
 from script.encrypt_aes import encrypt_file_aes
 from script.decrypt_aes import decrypt_file_aes
+from script.encrypt_chacha20 import encrypt_file_chacha20  # noqa: F401
+from script.decrypt_chacha20 import decrypt_file_chacha20  # noqa: F401
 
 app = Flask(__name__)
 
@@ -14,9 +16,17 @@ DECRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/decrypted"
 for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER]:
     os.makedirs(folder, exist_ok=True)
 
+@app.route("/")
+def index():
+    return render_template("/index.html")
+
 @app.route("/aes_enc_dec")
 def aes_enc_dec():
     return render_template("enc_dec_algorithms/aes-128.html")
+
+@app.route("/chacha20_enc_dec")
+def chacha20_enc_dec():
+    return render_template("enc_dec_algorithms/chacha20.html")
 
 @app.route("/encrypt", methods=["POST"])
 def encrypt_file_route():

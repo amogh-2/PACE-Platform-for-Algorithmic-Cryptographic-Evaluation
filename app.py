@@ -44,7 +44,7 @@ def encrypt_file():
     # Save original file to uploads/
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
-    algorithm = 'aes'
+    
     # Encrypt the file
     with open(file_path, "rb") as f:
         if algorithm == 'aes':
