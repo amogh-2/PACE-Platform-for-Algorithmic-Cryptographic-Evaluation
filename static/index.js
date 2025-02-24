@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const aesButton = document.getElementById('aesButton');
+    const aes_cbcButton = document.getElementById('aes_cbcButton');
     const chacha20Button = document.getElementById('chacha20Button');
 
-    aesButton.addEventListener('click', () => {
-        window.location.href = '/aes_enc_dec';
+    aes_cbcButton.addEventListener('click', () => {
+        window.location.href = '/aes_cbc_enc_dec';
     });
 
     chacha20Button.addEventListener('click', () => {

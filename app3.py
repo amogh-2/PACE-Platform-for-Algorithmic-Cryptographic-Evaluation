@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, jsonify, send_file
 import os
 import base64
 from flask_cors import CORS
-from script.encrypt_aes import encrypt_file_aes 
-from script.decrypt_aes import decrypt_file_aes 
+from script.encrypt_aes_cbc import encrypt_file_aes_cbc 
+from script.decrypt_aes_cbc import decrypt_file_aes_cbc 
 from script.encrypt_chacha20 import encrypt_file_chacha20 
 from script.decrypt_chacha20 import decrypt_file_chacha20 
 
@@ -22,9 +22,9 @@ for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER]:
 def index():
     return render_template("/index.html")
 
-@app.route("/aes_enc_dec")
-def aes_enc_dec():
-    return render_template("enc_dec_algorithms/aes-128.html")
+@app.route("/aes_cbc_enc_dec")
+def aes_cbc_enc_dec():
+    return render_template("enc_dec_algorithms/aes_cbc-128.html")
 
 @app.route("/chacha20_enc_dec")
 def chacha20_enc_dec():
@@ -41,7 +41,7 @@ def encrypt_file():
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    if algorithm not in ['aes', 'chacha20']:
+    if algorithm not in ['aes_cbc', 'chacha20']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
     # Save original file to uploads/
@@ -50,8 +50,8 @@ def encrypt_file():
     
     # Encrypt the file
     with open(file_path, "rb") as f:
-        if algorithm == 'aes':
-            result = encrypt_file_aes(f)
+        if algorithm == 'aes_cbc':
+            result = encrypt_file_aes_cbc(f)
         else:  # chacha20
             result = encrypt_file_chacha20(f)
 
@@ -70,7 +70,7 @@ def encrypt_file():
         mimetype="application/octet-stream"
     ), 200, {
         "Key": result["key"],
-        "IV_or_Nonce": result["iv"] if algorithm == 'aes' else result["nonce"],
+        "IV_or_Nonce": result["iv"] if algorithm == 'aes_cbc' else result["nonce"],
         "Algorithm": algorithm
     }
 
@@ -84,15 +84,15 @@ def decrypt_file():
     iv_or_nonce = request.form["iv_or_nonce"]
     algorithm = request.form["algorithm"]
 
-    if algorithm not in ['aes', 'chacha20']:
+    if algorithm not in ['aes_cbc', 'chacha20']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
     # Save encrypted file to encrypted/
     encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename)
     file.save(encrypted_path)
     try:
-        if algorithm == 'aes':
-            decrypted_path = decrypt_file_aes(encrypted_path, key, iv_or_nonce)
+        if algorithm == 'aes_cbc':
+            decrypted_path = decrypt_file_aes_cbc(encrypted_path, key, iv_or_nonce)
         else:  # chacha20
             decrypted_path = decrypt_file_chacha20(encrypted_path, key, iv_or_nonce)
 

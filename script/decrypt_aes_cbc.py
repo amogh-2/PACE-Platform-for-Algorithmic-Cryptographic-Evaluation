@@ -1,9 +1,9 @@
 import base64
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
-import os
+#import os
 
-def decrypt_file_aes(filepath, key_b64, iv_b64):
+def decrypt_file_aes_cbc(filepath, key_b64, iv_b64):
     try:
         key = base64.b64decode(key_b64)
         iv = base64.b64decode(iv_b64)

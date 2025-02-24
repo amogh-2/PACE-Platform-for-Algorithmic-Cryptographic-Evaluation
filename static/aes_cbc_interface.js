@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('algorithm', 'aes');
+      formData.append('algorithm', 'aes_cbc');
 
       fetch('/encrypt', {
           method: 'POST',
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('file', file);
       formData.append('key', key);
       formData.append('iv_or_nonce', iv);
-      formData.append('algorithm', 'aes');
+      formData.append('algorithm', 'aes_cbc');
 
       fetch('/decrypt', {
           method: 'POST',
