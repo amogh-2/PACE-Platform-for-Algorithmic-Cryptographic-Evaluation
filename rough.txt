@@ -1,0 +1,27 @@
+@app.route("/")
+def home():
+    return render_template("/index.html")
+
+@app.route("/aes_enc_dec")
+def aes_enc_dec():
+    return render_template("enc_dec_algorithms/aes-128.html")
+
+@app.route("/chacha20_enc_dec")
+def chacha20():
+    return render_template("enc_dec_algorithms/chacha20.html")
+
+@app.route("/ecc_enc_dec")
+def ecc_enc_dec():
+    return render_template("enc_dec_algorithms/ecc.html")
+
+@app.route("/rsa_enc_dec")
+def rsa_enc_dec():
+    return render_template("enc_dec_algorithms/rsa.html")
+
+@app.route("/sha3_enc_dec")
+def sha3_enc_dec():
+    return render_template("enc_dec_algorithms/sha-3.html")
+
+@app.route("/sha256_enc_dec")
+def sha256_enc_dec():
+    return render_template("enc_dec_algorithms/sha-256.html")

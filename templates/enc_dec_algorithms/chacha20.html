@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChaCha20 File Encryption & Decryption</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Encrypt a File with ChaCha20</h2>
+        <input type="file" id="fileInput">
+        <button id="encryptButton">Encrypt</button>
+        <p id="encryption-details"></p>
+        <a id="download-link" style="display: none;" download>Download Encrypted File</a>
+    </div>
+
+    <div class="container">
+        <h2>Decrypt a File with ChaCha20</h2>
+        <input type="file" id="decryptFileInput">
+        <input type="text" id="decryptKey" placeholder="Enter Key">
+        <input type="text" id="decryptNonce" placeholder="Enter Nonce">
+        <button id="decryptButton">Decrypt</button>
+        <a id="decrypt-download-link" style="display: none;" download>Download Decrypted File</a>
+    </div>
+
+    <script src="static/chacha20_interface.js"></script>
+</body>
+</html>
