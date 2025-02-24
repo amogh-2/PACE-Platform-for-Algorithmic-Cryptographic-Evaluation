@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
               throw new Error('Encryption failed');
           }
           const key = response.headers.get('Key');
-          const nonce = response.headers.get('IV_or_Nonce');
+          const nonce = response.headers.get('nonce');
           encryptionDetails.textContent = `Key: ${key}\nNonce: ${nonce}`;
           return response.blob();
       })
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('key', key);
-      formData.append('iv_or_nonce', nonce);
+      formData.append('nonce', nonce);
       formData.append('algorithm', 'chacha20');
 
       fetch('/decrypt', {

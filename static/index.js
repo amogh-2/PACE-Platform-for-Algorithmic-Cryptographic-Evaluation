@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const aes_cbcButton = document.getElementById('aes_cbcButton');
+    const aesCbcButton = document.getElementById('aesCbcButton');
     const aesGcmButton = document.getElementById('aesGcmButton');
     const chacha20Button = document.getElementById('chacha20Button');
+    const chacha20Poly1305Button = document.getElementById('chacha20Poly1305Button');
 
-    aes_cbcButton.addEventListener('click', () => {
+    aesCbcButton.addEventListener('click', () => {
         window.location.href = '/aes_cbc_enc_dec';
     });
 
@@ -13,5 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chacha20Button.addEventListener('click', () => {
         window.location.href = '/chacha20_enc_dec';
+    });
+
+    chacha20Poly1305Button.addEventListener('click', () => {
+        window.location.href = '/chacha20_poly1305_enc_dec';
     });
 });

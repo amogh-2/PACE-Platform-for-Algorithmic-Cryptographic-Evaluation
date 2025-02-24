@@ -13,7 +13,7 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -48,9 +48,10 @@
     <div class="container">
         <h1>Select Encryption Algorithm</h1>
         <div class="button-container">
-            <button id="aes_cbcButton">AES-128 (CBC)</button>
-            <button id="aesGcmButton">AES-128 (GCM)</button>
+            <button id="aesCbcButton">AES-CBC-128</button>
+            <button id="aesGcmButton">AES-GCM-128</button>
             <button id="chacha20Button">ChaCha20</button>
+            <button id="chacha20Poly1305Button">ChaCha20-Poly1305</button>
         </div>
     </div>
     <script src="/static/index.js"></script>

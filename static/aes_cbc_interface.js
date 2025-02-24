@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('algorithm', 'aes_cbc');
+      formData.append('algorithm', 'aes-cbc');
 
       fetch('/encrypt', {
           method: 'POST',
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
               throw new Error('Encryption failed');
           }
           const key = response.headers.get('Key');
-          const iv = response.headers.get('IV_or_Nonce');
+          const iv = response.headers.get('IV');
           encryptionDetails.textContent = `Key: ${key}\nIV: ${iv}`;
           return response.blob();
       })
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('key', key);
-      formData.append('iv_or_nonce', iv);
-      formData.append('algorithm', 'aes_cbc');
+      formData.append('iv', iv);
+      formData.append('algorithm', 'aes-cbc');
 
       fetch('/decrypt', {
           method: 'POST',

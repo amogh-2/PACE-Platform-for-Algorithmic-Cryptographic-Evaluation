@@ -4,10 +4,12 @@ import base64
 from flask_cors import CORS
 from script.encrypt_aes_cbc import encrypt_file_aes_cbc
 from script.decrypt_aes_cbc import decrypt_file_aes_cbc
-from script.encrypt_chacha20 import encrypt_file_chacha20 
-from script.decrypt_chacha20 import decrypt_file_chacha20 
 from script.encrypt_aes_gcm import encrypt_file_aes_gcm
 from script.decrypt_aes_gcm import decrypt_file_aes_gcm
+from script.encrypt_chacha20 import encrypt_file_chacha20
+from script.decrypt_chacha20 import decrypt_file_chacha20
+from script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
+from script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
 
 app = Flask(__name__)
 CORS(app)
@@ -25,16 +27,20 @@ def index():
     return render_template("/index.html")
 
 @app.route("/aes_cbc_enc_dec")
-def aes_enc_dec():
-    return render_template("enc_dec_algorithms/aes_cbc-128.html")
+def aes_cbc_enc_dec():
+    return render_template("enc_dec_algorithms/aes-cbc-128.html")
 
 @app.route("/aes_gcm_enc_dec")
 def aes_gcm_enc_dec():
-    return render_template("enc_dec_algorithms/aes_gcm-128.html")
+    return render_template("enc_dec_algorithms/aes-gcm-128.html")
 
 @app.route("/chacha20_enc_dec")
 def chacha20_enc_dec():
     return render_template("enc_dec_algorithms/chacha20.html")
+
+@app.route("/chacha20_poly1305_enc_dec")
+def chacha20_poly1305_enc_dec():
+    return render_template("enc_dec_algorithms/chacha20-poly1305.html")
 
 @app.route("/encrypt", methods=["POST"])
 def encrypt_file():
@@ -47,7 +53,7 @@ def encrypt_file():
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    if algorithm not in ['aes_cbc', 'aes-gcm', 'chacha20']:
+    if algorithm not in ['aes-cbc', 'aes-gcm', 'chacha20', 'chacha20-poly1305']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
     # Save original file to uploads/
@@ -56,12 +62,14 @@ def encrypt_file():
     
     # Encrypt the file
     with open(file_path, "rb") as f:
-        if algorithm == 'aes_cbc':
+        if algorithm == 'aes-cbc':
             result = encrypt_file_aes_cbc(f)
         elif algorithm == 'aes-gcm':
             result = encrypt_file_aes_gcm(f)
-        else:  # chacha20
+        elif algorithm == 'chacha20':
             result = encrypt_file_chacha20(f)
+        else:  # chacha20-poly1305
+            result = encrypt_file_chacha20_poly1305(f)
 
     if "error" in result:
         return jsonify(result), 500
@@ -76,13 +84,13 @@ def encrypt_file():
         "Algorithm": algorithm
     }
 
-    if algorithm == 'aes_cbc':
-        headers["IV_or_Nonce"] = result["iv"]
+    if algorithm == 'aes-cbc':
+        headers["IV"] = result["iv"]
     elif algorithm == 'aes-gcm':
         headers["Nonce"] = result["nonce"]
         headers["Tag"] = result["tag"]
-    else:  # chacha20
-        headers["IV_or_Nonce"] = result["nonce"]
+    else:  # chacha20 or chacha20-poly1305
+        headers["Nonce"] = result["nonce"]
 
     return send_file(
         encrypted_path,
@@ -100,7 +108,7 @@ def decrypt_file():
     key = request.form["key"]
     algorithm = request.form["algorithm"]
 
-    if algorithm not in ['aes_cbc', 'aes-gcm', 'chacha20']:
+    if algorithm not in ['aes-cbc', 'aes-gcm', 'chacha20', 'chacha20-poly1305']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
     # Save encrypted file to encrypted/
@@ -108,16 +116,19 @@ def decrypt_file():
     file.save(encrypted_path)
 
     try:
-        if algorithm == 'aes_cbc':
-            iv_or_nonce = request.form["iv_or_nonce"]
-            decrypted_path = decrypt_file_aes_cbc(encrypted_path, key, iv_or_nonce)
+        if algorithm == 'aes-cbc':
+            iv = request.form["iv"]
+            decrypted_path = decrypt_file_aes_cbc(encrypted_path, key, iv)
         elif algorithm == 'aes-gcm':
             nonce = request.form["nonce"]
             tag = request.form["tag"]
             decrypted_path = decrypt_file_aes_gcm(encrypted_path, key, nonce, tag)
-        else:  # chacha20
-            iv_or_nonce = request.form["iv_or_nonce"]
-            decrypted_path = decrypt_file_chacha20(encrypted_path, key, iv_or_nonce)
+        elif algorithm == 'chacha20':
+            nonce = request.form["nonce"]
+            decrypted_path = decrypt_file_chacha20(encrypted_path, key, nonce)
+        else:  # chacha20-poly1305
+            nonce = request.form["nonce"]
+            decrypted_path = decrypt_file_chacha20_poly1305(encrypted_path, key, nonce)
 
         return send_file(
             decrypted_path,
