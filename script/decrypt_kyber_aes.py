@@ -1,30 +1,31 @@
 #import os
 import base64
+#import json
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
-from kyber_py.kyber.kyber import Kyber  # Import the correct Kyber class
+from kyber_py.kyber.kyber import Kyber  # Import the Kyber class
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives import hashes
 
-# Initialize Kyber instance with the correct parameter set
+# Initialize Kyber
 kyber = Kyber(parameter_set={"k": 2, "eta_1": 3, "eta_2": 2, "du": 10, "dv": 4})
 
 def decrypt_file_kyber_aes(filepath, encrypted_key_b64, secret_key_b64, nonce_b64, tag_b64):
     try:
-        # ✅ Decode Base64 inputs
+        # ✅ Decode Base64 inputs provided by the user
         encrypted_key = base64.b64decode(encrypted_key_b64)
         secret_key = base64.b64decode(secret_key_b64)
         nonce = base64.b64decode(nonce_b64)
         tag = base64.b64decode(tag_b64)
 
-        # ✅ Decrypt shared secret using Kyber KEM
+        # ✅ Decapsulate the Kyber shared secret
         shared_secret = kyber.decaps(secret_key, encrypted_key)
 
-        # ✅ Use HKDF to derive the AES-256 key from the shared secret
+        # ✅ Use HKDF to derive AES-256 key
         hkdf = HKDF(
-            algorithm=hashes.SHA256(),
+            algorithm=hashes.SHA3_512(),  # Stronger post-quantum security
             length=32,  # AES-256 key size
-            salt=None,  # Optional: Can set salt for added security
+            salt=None,
             info=b"Kyber-AES Encryption",
             backend=default_backend()
         )
@@ -48,24 +49,24 @@ def decrypt_file_kyber_aes(filepath, encrypted_key_b64, secret_key_b64, nonce_b6
         return decrypted_filepath
 
     except Exception as e:
-        print(f"Decryption failed: {str(e)}")
+        print(f"❌ Decryption failed: {str(e)}")
         return None
 
-# Example Usage
-if __name__ == "__main__":
-    # Replace with actual encrypted data
-    encrypted_key_b64 = "ENCRYPTED_KEY_BASE64"
-    secret_key_b64 = "SECRET_KEY_BASE64"
-    nonce_b64 = "NONCE_BASE64"
-    tag_b64 = "TAG_BASE64"
 
-    encrypted_filepath = "example.txt.enc"  # Replace with actual encrypted file path
+# ✅ User Input Mode
+if __name__ == "__main__":
+    print("🔑 Provide the required decryption keys:")
+    encrypted_filepath = input("Enter path to the encrypted file: ").strip()
+    encrypted_key_b64 = input("Enter Base64-encoded encrypted AES key: ").strip()
+    secret_key_b64 = input("Enter Base64-encoded Kyber secret key: ").strip()
+    nonce_b64 = input("Enter Base64-encoded nonce: ").strip()
+    tag_b64 = input("Enter Base64-encoded authentication tag: ").strip()
 
     decrypted_file = decrypt_file_kyber_aes(
         encrypted_filepath, encrypted_key_b64, secret_key_b64, nonce_b64, tag_b64
     )
-    
+
     if decrypted_file:
-        print(f"Decryption successful: {decrypted_file}")
+        print(f"🎉 Decryption successful! File saved as: {decrypted_file}")
     else:
-        print("Decryption failed!")
+        print("❌ Decryption failed! Check your keys and try again.")
