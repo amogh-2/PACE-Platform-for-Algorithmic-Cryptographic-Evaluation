@@ -19,9 +19,10 @@ CORS(app)
 UPLOAD_FOLDER = "/home/amogh/Downloads/temp/try_api/uploads"
 ENCRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/encrypted"
 DECRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/decrypted"
+ENCRYPTION_INFO_FOLDER = "/home/amogh/Downloads/temp/try_api/encryption_info"
 
 # Create necessary folders
-for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER]:
+for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INFO_FOLDER]:
     os.makedirs(folder, exist_ok=True)
 
 @app.route("/")
@@ -77,7 +78,7 @@ def encrypt_file():
         elif algorithm == 'chacha20-poly1305':
             result = encrypt_file_chacha20_poly1305(f)
         else:  # kyber-aes
-            result = encrypt_file_kyber_aes(f)
+            result, encryption_info = encrypt_file_kyber_aes(f)
 
     if "error" in result:
         return jsonify(result), 500
@@ -87,33 +88,28 @@ def encrypt_file():
     with open(encrypted_path, "wb") as f:
         f.write(base64.b64decode(result["encrypted_data"]))
 
-    headers = {
-        "Algorithm": algorithm
+    response = {
+        "success": "File encrypted successfully",
+        "encrypted_file": f"/download_encrypted/{file.filename}.enc",
     }
 
-    if algorithm == 'aes-cbc':
-        headers["Key"] = result["key"]
-        headers["IV"] = result["iv"]
-    elif algorithm == 'aes-gcm':
-        headers["Key"] = result["key"]
-        headers["Nonce"] = result["nonce"]
-        headers["Tag"] = result["tag"]
-    elif algorithm in ['chacha20', 'chacha20-poly1305']:
-        headers["Key"] = result["key"]
-        headers["Nonce"] = result["nonce"]
-    else:  # kyber-aes
-        headers["EncryptedKey"] = result["encrypted_key"]
-        headers["Nonce"] = result["nonce"]
-        headers["Tag"] = result["tag"]
-        headers["PublicKey"] = result["public_key"]
-        headers["SecretKey"] = result["secret_key"]
+    # For Kyber-AES, save and provide link to encryption info
+    if algorithm == 'kyber-aes':
+        info_file_path = os.path.join(ENCRYPTION_INFO_FOLDER, f"{file.filename}_info.txt")
+        with open(info_file_path, "w") as info_file:
+            for key, value in encryption_info.items():
+                info_file.write(f"{key}: {value}\n")
+        response["encryption_info"] = f"/download_info/{os.path.basename(info_file_path)}"
 
-    return send_file(
-        encrypted_path,
-        as_attachment=True,
-        download_name=file.filename + ".enc",
-        mimetype="application/octet-stream"
-    ), 200, headers
+    return jsonify(response)
+
+@app.route("/download_encrypted/<filename>")
+def download_encrypted(filename):
+    return send_file(os.path.join(ENCRYPTED_FOLDER, filename), as_attachment=True)
+
+@app.route("/download_info/<filename>")
+def download_info(filename):
+    return send_file(os.path.join(ENCRYPTION_INFO_FOLDER, filename), as_attachment=True)
 
 @app.route("/decrypt", methods=["POST"])
 def decrypt_file():
@@ -166,4 +162,3 @@ def decrypt_file():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
