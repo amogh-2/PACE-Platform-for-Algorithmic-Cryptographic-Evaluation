@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const encryptFileInput = document.getElementById("encryptFileInput")
   const encryptButton = document.getElementById("encryptButton")
   const encryptionDetails = document.getElementById("encryption-details")
-  const downloadLink = document.getElementById("download-link")
+  const downloadEncryptedLink = document.getElementById("download-encrypted-link")
+  const downloadInfoLink = document.getElementById("download-info-link")
 
   const decryptFileInput = document.getElementById("decryptFileInput")
   const decryptEncryptedKey = document.getElementById("decryptEncryptedKey")
@@ -28,24 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       body: formData,
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Encryption failed")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          throw new Error(data.error)
         }
-        const encryptedKey = response.headers.get("EncryptedKey")
-        const nonce = response.headers.get("Nonce")
-        const tag = response.headers.get("Tag")
-        const publicKey = response.headers.get("PublicKey")
-        const secretKey = response.headers.get("SecretKey")
-        encryptionDetails.textContent = `Encrypted Key: ${encryptedKey}\nNonce: ${nonce}\nTag: ${tag}\nPublic Key: ${publicKey}\nSecret Key: ${secretKey}`
-        return response.blob()
-      })
-      .then((blob) => {
-        const url = URL.createObjectURL(blob)
-        downloadLink.href = url
-        downloadLink.download = `${file.name}.enc`
-        downloadLink.style.display = "inline-block"
-        downloadLink.textContent = "Download Encrypted File"
+        encryptionDetails.textContent = "Encryption successful!"
+        downloadEncryptedLink.href = data.encrypted_file
+        downloadEncryptedLink.style.display = "inline-block"
+        downloadEncryptedLink.textContent = "Download Encrypted File"
+        downloadInfoLink.href = data.encryption_info
+        downloadInfoLink.style.display = "inline-block"
+        downloadInfoLink.textContent = "Download Encryption Info"
       })
       .catch((error) => {
         console.error("Error:", error)
@@ -97,4 +92,3 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   })
 })
-
