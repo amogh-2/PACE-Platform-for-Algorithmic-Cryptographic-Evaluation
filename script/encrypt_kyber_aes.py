@@ -18,7 +18,7 @@ def encrypt_file_kyber_aes(file):
 
         # Use HKDF to derive a secure AES-256 key
         hkdf = HKDF(
-            algorithm=hashes.SHA256(),
+            algorithm=hashes.SHA3_512(),
             length=32,
             salt=None,
             info=b"Kyber-AES Encryption",

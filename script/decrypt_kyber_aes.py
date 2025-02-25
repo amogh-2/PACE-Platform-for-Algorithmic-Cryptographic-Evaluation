@@ -20,7 +20,7 @@ def decrypt_file_kyber_aes(filepath, encrypted_key_b64, secret_key_b64, nonce_b6
 
         # Use HKDF to derive the AES-256 key from the shared secret
         hkdf = HKDF(
-            algorithm=hashes.SHA256(),
+            algorithm=hashes.SHA3_512(),
             length=32,
             salt=None,
             info=b"Kyber-AES Encryption",
