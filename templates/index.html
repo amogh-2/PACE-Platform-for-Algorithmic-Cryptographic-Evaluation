@@ -27,6 +27,7 @@
         .button-container {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
             margin-top: 30px;
         }
         button {
@@ -38,6 +39,7 @@
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s;
+            margin: 10px;
         }
         button:hover {
             background-color: #45a049;
@@ -52,8 +54,10 @@
             <button id="aesGcmButton">AES-GCM-128</button>
             <button id="chacha20Button">ChaCha20</button>
             <button id="chacha20Poly1305Button">ChaCha20-Poly1305</button>
+            <button id="kyberAesButton">Kyber-512 with AES-GCM-256</button>
         </div>
     </div>
     <script src="/static/index.js"></script>
 </body>
 </html>
+
