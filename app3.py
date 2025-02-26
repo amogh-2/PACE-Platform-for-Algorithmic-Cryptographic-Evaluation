@@ -2,16 +2,16 @@ from flask import Flask, render_template, request, jsonify, send_file
 import os
 import base64
 from flask_cors import CORS
-from script.encrypt_aes_cbc import encrypt_file_aes_cbc
-from script.decrypt_aes_cbc import decrypt_file_aes_cbc
-from script.encrypt_aes_gcm import encrypt_file_aes_gcm
-from script.decrypt_aes_gcm import decrypt_file_aes_gcm
-from script.encrypt_chacha20 import encrypt_file_chacha20
-from script.decrypt_chacha20 import decrypt_file_chacha20
-from script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
-from script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
-from script.encrypt_kyber_aes import encrypt_file_kyber_aes
-from script.decrypt_kyber_aes import decrypt_file_kyber_aes
+from enc_dec_script.encrypt_aes_cbc import encrypt_file_aes_cbc
+from enc_dec_script.decrypt_aes_cbc import decrypt_file_aes_cbc
+from enc_dec_script.encrypt_aes_gcm import encrypt_file_aes_gcm
+from enc_dec_script.decrypt_aes_gcm import decrypt_file_aes_gcm
+from enc_dec_script.encrypt_chacha20 import encrypt_file_chacha20
+from enc_dec_script.decrypt_chacha20 import decrypt_file_chacha20
+from enc_dec_script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
+from enc_dec_script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
+from enc_dec_script.encrypt_kyber_aes import encrypt_file_kyber_aes
+from enc_dec_script.decrypt_kyber_aes import decrypt_file_kyber_aes
 
 app = Flask(__name__)
 CORS(app)
@@ -28,6 +28,28 @@ for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INF
 @app.route("/")
 def index():
     return render_template("/index.html")
+@app.route("/processor_choosing")
+def processor_choosing():
+    return render_template("/processor_benchmarking/processor_choose.html")
+@app.route("/aes_cbc_128_pro")
+def aes_cbc_128_pro():
+    return render_template("/processor_benchmarking/processor_particular/aes-cbc-128-pro.html")
+@app.route("/aes_gcm_128_pro")
+def aes_gcm_128_pro():
+    return render_template("/processor_benchmarking/processor_particular/aes-gcm-128-pro.html")
+@app.route("/chacha20_poly1305_pro")
+def chacha20_poly1305_pro():
+    return render_template("/processor_benchmarking/processor_particular/chacha20-poly1305-pro.html")
+
+@app.route("/chacha20_pro")
+def chacha20_pro():
+    return render_template("/processor_benchmarking/processor_particular/chacha20pro.html")
+@app.route("/kyber_aes_pro")
+def kyber_aes_pro():
+    return render_template("/processor_benchmarking/processor_particular/kyber-aes-256-pro.html")
+@app.route("/kyber_chacha20_poly1305_pro")
+def kyber_chacha20_poly1305_pro():
+    return render_template("/processor_benchmarking/processor_particular/kyber-chacha20-poly-pro.html")
 
 @app.route("/aes_cbc_enc_dec")
 def aes_cbc_enc_dec():

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Benchmarking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 80%;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 250px;
+            margin: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Choose an Algorithm for Benchmarking</h2>
+    <div class="container">
+        <div class="card" id="aes128cbc">AES-128-CBC</div>
+        <div class="card" id="chacha20">ChaCha20</div>
+        <div class="card" id="chacha20poly1305">ChaCha20-Poly1305</div>
+        <div class="card" id="aes128gcm">AES-GCM-128</div>
+        <div class="card" id="kyberaes">Kyber-512 with AES-GCM-256</div>
+        <div class="card" id="kyberchacha20poly">Kyber-512 with ChaCha20-Poly1305</div>
+        
+    </div>
+
+    <script src="static/processor_benchmarking.js"></script>
+</body>
+</html>

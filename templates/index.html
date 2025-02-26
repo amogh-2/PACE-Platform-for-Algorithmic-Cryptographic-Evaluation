@@ -19,6 +19,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
         }
         h1 {
             text-align: center;
@@ -44,6 +45,11 @@
         button:hover {
             background-color: #45a049;
         }
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 2px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +63,14 @@
             <button id="kyberAesButton">Kyber-512 with AES-GCM-256</button>
         </div>
     </div>
+
+    <hr>
+
+    <div class="container">
+        <h1>Processor-Based Benchmarking</h1>
+        <button id="processorBenchmarkButton">Go to Processor Benchmarking</button>
+    </div>
+
     <script src="/static/index.js"></script>
 </body>
 </html>
-
