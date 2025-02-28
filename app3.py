@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
 import base64
+import json
 from flask_cors import CORS
 from enc_dec_script.encrypt_aes_cbc import encrypt_file_aes_cbc
 from enc_dec_script.decrypt_aes_cbc import decrypt_file_aes_cbc
@@ -12,18 +13,23 @@ from enc_dec_script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1
 from enc_dec_script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
 from enc_dec_script.encrypt_kyber_aes import encrypt_file_kyber_aes
 from enc_dec_script.decrypt_kyber_aes import decrypt_file_kyber_aes
+from processor_page_script.aes_cbc import run_benchmark
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 CORS(app)
 
 UPLOAD_FOLDER = "/home/amogh/Downloads/temp/try_api/uploads"
 ENCRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/encrypted"
 DECRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/decrypted"
 ENCRYPTION_INFO_FOLDER = "/home/amogh/Downloads/temp/try_api/encryption_info"
+BENCHMARK_RESULTS_FOLDER = "/home/amogh/Downloads/temp/try_api/benchmark_results"
 
 # Create necessary folders
-for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INFO_FOLDER]:
+for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INFO_FOLDER, BENCHMARK_RESULTS_FOLDER]:
     os.makedirs(folder, exist_ok=True)
+
+# Path to store benchmark results
+AES_CBC_RESULTS_FILE = os.path.join(BENCHMARK_RESULTS_FOLDER, "aes_cbc_benchmark_results.txt")
 
 @app.route("/")
 def index():
@@ -70,6 +76,60 @@ def chacha20_poly1305_enc_dec():
 @app.route("/kyber_aes_enc_dec")
 def kyber_aes_enc_dec():
     return render_template("enc_dec_algorithms/kyber-aes-256.html")
+
+# New routes for AES-CBC benchmarking
+@app.route("/run_aes_cbc_benchmark", methods=["POST"])
+def aes_cbc_benchmark():
+    try:
+        data = request.json
+        file_size = data.get("fileSize", "5MB")
+        
+        # Run the benchmark
+        result = run_benchmark(file_size)
+        
+        if "error" in result:
+            return jsonify({"error": result["error"]}), 500
+        
+        # Save result to file
+        save_benchmark_result(result)
+        
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/get_aes_cbc_benchmark_results", methods=["GET"])
+def get_benchmark_results():
+    try:
+        results = load_benchmark_results()
+        return jsonify(results)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def save_benchmark_result(result):
+    """Save benchmark result to a text file"""
+    try:
+        # Load existing results
+        results = load_benchmark_results()
+        
+        # Add new result
+        results.append(result)
+        
+        # Save all results back to file
+        with open(AES_CBC_RESULTS_FILE, 'w') as f:
+            json.dump(results, f, indent=2)
+    except Exception as e:
+        print(f"Error saving benchmark result: {e}")
+
+def load_benchmark_results():
+    """Load benchmark results from the text file"""
+    if not os.path.exists(AES_CBC_RESULTS_FILE):
+        return []
+    
+    try:
+        with open(AES_CBC_RESULTS_FILE, 'r') as f:
+            return json.load(f)
+    except Exception:
+        return []
 
 @app.route("/encrypt", methods=["POST"])
 def encrypt_file():
@@ -184,3 +244,4 @@ def decrypt_file():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

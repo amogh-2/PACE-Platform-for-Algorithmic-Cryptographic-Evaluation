@@ -59,9 +59,9 @@
         </p>
         <label for="file-size">Choose a file size:</label>
         <select id="file-size">
-            <option value="50MB">50MB</option>
-            <option value="100MB">100MB</option>
-            <option value="500MB">500MB</option>
+            <option value="5MB">5MB</option>
+            <option value="10MB">10MB</option>
+            <option value="20MB">20MB</option>
         </select>
         <button class="run-button">Run Benchmark</button>
     </div>
@@ -69,21 +69,17 @@
     <h3>Benchmarking Results</h3>
     <table>
         <tr>
-            <th>Processor Name</th>
-            <th>OS Used</th>
+            <th>CPU Model</th>
+            <th>OS Name</th>
             <th>File Size</th>
             <th>Encryption Time</th>
             <th>Decryption Time</th>
             <th>Execution Time</th>
         </tr>
-        <tr>
-            <td>Intel i7-10510U</td>
-            <td>Ubuntu</td>
-            <td>100MB</td>
-            <td>0.56s</td>
-            <td>0.52s</td>
-            <td>1.08s</td>
-        </tr>
     </table>
+
+    <!-- Make sure this path matches exactly -->
+    <script src="static/processr_particular_js/aes_cbc_128.js"></script>
 </body>
 </html>
+
