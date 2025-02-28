@@ -1,0 +1,82 @@
+[
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "10MB",
+    "encryption_time": 0.022,
+    "decryption_time": 0.011,
+    "execution_time": 0.054
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.065,
+    "decryption_time": 0.023,
+    "execution_time": 0.128
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.064,
+    "decryption_time": 0.031,
+    "execution_time": 0.124
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.064,
+    "decryption_time": 0.033,
+    "execution_time": 0.127
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.12,
+    "decryption_time": 0.032,
+    "execution_time": 0.185
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.07,
+    "decryption_time": 0.032,
+    "execution_time": 0.134
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.079,
+    "decryption_time": 0.033,
+    "execution_time": 0.149
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.071,
+    "decryption_time": 0.033,
+    "execution_time": 0.137
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.064,
+    "decryption_time": 0.034,
+    "execution_time": 0.127
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "20MB",
+    "encryption_time": 0.067,
+    "decryption_time": 0.03,
+    "execution_time": 0.128
+  }
+]

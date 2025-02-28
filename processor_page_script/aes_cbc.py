@@ -7,7 +7,7 @@ import platform
 import subprocess
 import re
 
-def encrypt_file_aes_cbc(file):
+def encrypt_file_aes_cbc(file_path):
     try:
         execution_time = time.perf_counter()
         key = os.urandom(16)  # AES_cbc-128 key (16 bytes)
@@ -16,16 +16,29 @@ def encrypt_file_aes_cbc(file):
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         encryptor = cipher.encryptor()
 
-        file_data = file.read()
-        start_time= time.perf_counter()
+        with open(file_path, 'rb') as file:
+            file_data = file.read()
+            
+        start_time = time.perf_counter()
         padded_data = file_data + b' ' * (16 - len(file_data) % 16)  # PKCS7 padding
-        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()  # noqa: F841
-        encryption_time=  time.perf_counter()-start_time
-        global execution_time_enc
+        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+        encryption_time = time.perf_counter() - start_time
+        
+        # Save encrypted data for decryption test
+        encrypted_file_path = file_path + ".enc"
+        with open(encrypted_file_path, 'wb') as file:
+            file.write(encrypted_data)
+            
         execution_time_enc = time.perf_counter() - execution_time
+        
+        # Return key and iv for decryption
         return {
-               "encryption_time": encryption_time,
-                  }
+            "encryption_time": encryption_time,
+            "execution_time_enc": execution_time_enc,
+            "key": base64.b64encode(key).decode('utf-8'),
+            "iv": base64.b64encode(iv).decode('utf-8'),
+            "encrypted_file_path": encrypted_file_path
+        }
     except Exception as e:
         return {"error": f"Encryption failed: {str(e)}"}
 
@@ -41,24 +54,27 @@ def decrypt_file_aes_cbc(filepath, key_b64, iv_b64):
 
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         decryptor = cipher.decryptor()
-        start_time= time.perf_counter()
+        
+        start_time = time.perf_counter()
         decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
 
-        pad_length = decrypted_data[-1]
-        decrypted_data = decrypted_data[:-pad_length]
-        decryption_time= time.perf_counter()-start_time
+        # Remove padding
+        padding_length = decrypted_data[-1] if isinstance(decrypted_data[-1], int) else ord(decrypted_data[-1])
+        if padding_length < 16:
+            decrypted_data = decrypted_data[:-padding_length]
+            
+        decryption_time = time.perf_counter() - start_time
         execution_time_dec = time.perf_counter() - execution_time
-        execution_time_aes_cbc = execution_time_enc + execution_time_dec
-        decrypted_filepath = filepath.replace(".enc", ".dec")
-        with open(decrypted_filepath, 'wb') as file:
-            file.write(decrypted_data)
-
-        return{
+        
+        # Clean up the encrypted file
+        os.remove(filepath)
+        
+        return {
             "decryption_time": decryption_time,
-            "execution_time_aes_cbc": execution_time_aes_cbc,
-        } 
+            "execution_time_dec": execution_time_dec
+        }
     except Exception as e:
-        raise Exception(f"Decryption failed: {str(e)}")
+        return {"error": f"Decryption failed: {str(e)}"}
     
 def get_system_info():
     try:
@@ -69,9 +85,75 @@ def get_system_info():
         ).strip()
 
         # Clean up the model name for consistency
-        cpu_model = re.sub(r'\s*\(R\)|\s*\(TM\)|\s*Core|Processor', '', cpu_model)  # Remove (R), (TM), "Core", "Processor"
+        cpu_model = re.sub(r'\s*$$R$$|\s*$$TM$$|\s*Core|Processor', '', cpu_model)  # Remove (R), (TM), "Core", "Processor"
         cpu_model = re.sub(r'\s+', ' ', cpu_model).strip()  # Normalize spaces
     except Exception as e:
-        cpu_model = str(e)
+        cpu_model = platform.processor()
+    
     os_name = platform.system()
-    return cpu_model, os_name 
+    return cpu_model, os_name
+
+def create_test_file(size_mb):
+    """Create a test file of specified size in MB"""
+    size_bytes = size_mb * 1024 * 1024  # Convert MB to bytes
+    test_file_path = f"test_data/{size_mb}MB.txt"
+    
+    # Create test_data directory if it doesn't exist
+    os.makedirs("test_data", exist_ok=True)
+    
+    # Create file with random data
+    with open(test_file_path, 'wb') as f:
+        f.write(os.urandom(size_bytes))
+    
+    return test_file_path
+
+def run_benchmark(file_size):
+    try:
+        # Convert file size string to number
+        size_mb = int(file_size.replace("MB", ""))
+        
+        # Create test file
+        file_path = create_test_file(size_mb)
+        
+        # Get system info
+        cpu_model, os_name = get_system_info()
+        
+        # Run encryption benchmark
+        encryption_result = encrypt_file_aes_cbc(file_path)
+        
+        if "error" in encryption_result:
+            return {"error": encryption_result["error"]}
+        
+        # Run decryption benchmark
+        decryption_result = decrypt_file_aes_cbc(
+            encryption_result["encrypted_file_path"],
+            encryption_result["key"],
+            encryption_result["iv"]
+        )
+        
+        if "error" in decryption_result:
+            return {"error": decryption_result["error"]}
+        
+        # Calculate total execution time
+        execution_time = encryption_result["execution_time_enc"] + decryption_result["execution_time_dec"]
+        
+        # Clean up test file
+        try:
+            os.remove(file_path)
+        except:
+            pass
+        
+        # Format the results
+        result = {
+            "cpu_model": cpu_model,
+            "os_name": os_name,
+            "file_size": file_size,
+            "encryption_time": round(encryption_result["encryption_time"], 3),
+            "decryption_time": round(decryption_result["decryption_time"], 3),
+            "execution_time": round(execution_time, 3)
+        }
+        
+        return result
+    except Exception as e:
+        return {"error": str(e)}
+
