@@ -11,8 +11,8 @@ from processor_page_script.aes_cbc import run_cbc_benchmark
 from processor_page_script.aes_gcm import run_gcm_benchmark
 from processor_page_script.aes_256_cbc import run_aes_256_cbc_benchmark
 from processor_page_script.aes_256_gcm import run_aes_256_gcm_benchmark
-# from processor_page_script.chacha20 import run_chacha20_benchmark
-# from processor_page_script.chacha20_poly1305 import run_chacha20_poly1305_benchmark
+from processor_page_script.chacha20 import run_chacha20_benchmark
+from processor_page_script.chacha20_poly1305 import run_chacha20_poly1305_benchmark
 from datetime import datetime
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -251,14 +251,14 @@ ALGORITHMS = {
         "benchmark_function": run_aes_256_gcm_benchmark,
         "route": "/aes_256_gcm_pro"
     },
-    # "ChaCha20": {
-    #     "benchmark_function": run_chacha20_benchmark,
-    #     "route": "/chacha20_pro"
-    # },
-    # "ChaCha20-Poly1305": {
-    #     "benchmark_function": run_chacha20_poly1305_benchmark,
-    #     "route": "/chacha20_poly1305_pro"
-    # }
+    "ChaCha20": {
+        "benchmark_function": run_chacha20_benchmark,
+        "route": "/chacha20_pro"
+    },
+    "ChaCha20-Poly1305": {
+        "benchmark_function": run_chacha20_poly1305_benchmark,
+        "route": "/chacha20_poly1305_pro"
+    }
 }
 
 @app.route("/get_benchmark_results", methods=["GET"])

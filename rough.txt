@@ -27,18 +27,6 @@ def sha256_enc_dec():
     return render_template("enc_dec_algorithms/sha-256.html")
 
 
-from flask import Flask, render_template, request, jsonify, send_file
-import os
-import base64
-from flask_cors import CORS
-from script.encrypt_aes_cbc import encrypt_file_aes_cbc
-from script.decrypt_aes_cbc import decrypt_file_aes_cbc
-from script.encrypt_aes_gcm import encrypt_file_aes_gcm
-from script.decrypt_aes_gcm import decrypt_file_aes_gcm
-from script.encrypt_chacha20 import encrypt_file_chacha20
-from script.decrypt_chacha20 import decrypt_file_chacha20
-from script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
-from script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
-from script.encrypt_kyber_aes import encrypt_file_kyber_aes
-from script.decrypt_kyber_aes import decrypt_file_kyber_aes
 
+QPSM2qljPQ0i6QeNrnhSU2==
+cFYWSopRLv4us91jujxJtQ==
