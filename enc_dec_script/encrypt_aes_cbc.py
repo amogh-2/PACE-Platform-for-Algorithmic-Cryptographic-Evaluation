@@ -12,7 +12,10 @@ def encrypt_file_aes_cbc(file):
         encryptor = cipher.encryptor()
 
         file_data = file.read()
-        padded_data = file_data + b' ' * (16 - len(file_data) % 16)  # PKCS7 padding
+        # Proper PKCS7 padding
+        block_size = 16
+        padding_length = block_size - (len(file_data) % block_size)
+        padded_data = file_data + bytes([padding_length]) * padding_length
         encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
         
         return {
@@ -22,3 +25,4 @@ def encrypt_file_aes_cbc(file):
         }
     except Exception as e:
         return {"error": f"Encryption failed: {str(e)}"}
+

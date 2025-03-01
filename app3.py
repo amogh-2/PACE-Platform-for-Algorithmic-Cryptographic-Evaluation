@@ -77,6 +77,14 @@ def chacha20_enc_dec():
 def chacha20_poly1305_enc_dec():
     return render_template("enc_dec_algorithms/chacha20-poly1305.html")
 
+@app.route("/download_encrypted/<filename>")
+def download_encrypted(filename):
+    return send_file(os.path.join(ENCRYPTED_FOLDER, filename), as_attachment=True)
+
+@app.route("/download_info/<filename>")
+def download_info(filename):
+    return send_file(os.path.join(ENCRYPTION_INFO_FOLDER, filename), as_attachment=True)
+
 @app.route("/encrypt", methods=["POST"])
 def encrypt_file():
     if "file" not in request.files or "algorithm" not in request.form:
@@ -84,18 +92,9 @@ def encrypt_file():
 
     file = request.files["file"]
     algorithm = request.form["algorithm"]
-
-    if file.filename == "":
-        return jsonify({"error": "No selected file"}), 400
-
-    if algorithm not in ['aes-cbc', 'aes-gcm', 'chacha20', 'chacha20-poly1305']:
-        return jsonify({"error": "Unsupported algorithm"}), 400
-
-    # Save original file to uploads/
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
-    
-    # Encrypt the file
+
     with open(file_path, "rb") as f:
         if algorithm == 'aes-cbc':
             result = encrypt_file_aes_cbc(f)
@@ -105,42 +104,21 @@ def encrypt_file():
             result = encrypt_file_chacha20(f)
         elif algorithm == 'chacha20-poly1305':
             result = encrypt_file_chacha20_poly1305(f)
+        else:
+            return jsonify({"error": "Unsupported algorithm"}), 400
 
     if "error" in result:
         return jsonify(result), 500
 
-    # Save encrypted file to encrypted/
     encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename + ".enc")
     with open(encrypted_path, "wb") as f:
         f.write(base64.b64decode(result["encrypted_data"]))
 
-    # Still save encryption info to file for compatibility with decrypt function
-    info_file_path = os.path.join(ENCRYPTION_INFO_FOLDER, f"{file.filename}_info.json")
-    with open(info_file_path, "w") as info_file:
-        json.dump(result, info_file)
-
-    # Include encryption info directly in the response
-    response = {
+    return jsonify({
         "success": "File encrypted successfully",
         "encrypted_file": f"/download_encrypted/{file.filename}.enc",
-        "encryption_info": f"/download_info/{os.path.basename(info_file_path)}",
-        # Include the actual encryption details directly in the response
-        "key": result.get("key", ""),
-        "iv": result.get("iv", ""),
-        "nonce": result.get("nonce", ""),
-        "tag": result.get("tag", ""),
-        "algorithm": algorithm
-    }
-
-    return jsonify(response)
-
-@app.route("/download_encrypted/<filename>")
-def download_encrypted(filename):
-    return send_file(os.path.join(ENCRYPTED_FOLDER, filename), as_attachment=True)
-
-@app.route("/download_info/<filename>")
-def download_info(filename):
-    return send_file(os.path.join(ENCRYPTION_INFO_FOLDER, filename), as_attachment=True)
+        **{k: v for k, v in result.items() if k != "encrypted_data"}
+    })
 
 @app.route("/decrypt", methods=["POST"])
 def decrypt_file():
@@ -149,54 +127,20 @@ def decrypt_file():
 
     file = request.files["file"]
     algorithm = request.form["algorithm"]
+    file_path = os.path.join(ENCRYPTED_FOLDER, file.filename)
+    file.save(file_path)
 
-    if algorithm not in ['aes-cbc', 'aes-gcm', 'chacha20', 'chacha20-poly1305']:
-        return jsonify({"error": "Unsupported algorithm"}), 400
-
-    # Save encrypted file to encrypted/
-    encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename)
-    file.save(encrypted_path)
-
-    # Check if manual keys are provided
-    manual_keys = request.form.get('manual_keys', 'false') == 'true'
-    
     try:
-        if manual_keys:
-            if algorithm == 'aes-cbc':
-                key = request.form.get('key')
-                iv = request.form.get('iv')
-            elif algorithm == 'aes-gcm':
-                key = request.form.get('key')
-                nonce = request.form.get('nonce')
-                tag = request.form.get('tag')
-            elif algorithm in ['chacha20', 'chacha20-poly1305']:
-                key = request.form.get('key')
-                nonce = request.form.get('nonce')
-        else:
-            # Load encryption info from file (original behavior)
-            info_file_path = os.path.join(ENCRYPTION_INFO_FOLDER, f"{file.filename.replace('.enc', '')}_info.json")
-            with open(info_file_path, "r") as info_file:
-                encryption_info = json.load(info_file)
-            
-            if algorithm == 'aes-cbc':
-                key = encryption_info.get("key")
-                iv = encryption_info.get("iv")
-            elif algorithm == 'aes-gcm':
-                key = encryption_info.get("key")
-                nonce = encryption_info.get("nonce")
-                tag = encryption_info.get("tag")
-            elif algorithm in ['chacha20', 'chacha20-poly1305']:
-                key = encryption_info.get("key")
-                nonce = encryption_info.get("nonce")
-
         if algorithm == 'aes-cbc':
-            decrypted_path = decrypt_file_aes_cbc(encrypted_path, key, iv)
+            decrypted_path = decrypt_file_aes_cbc(file_path, request.form.get('key'), request.form.get('iv'))
         elif algorithm == 'aes-gcm':
-            decrypted_path = decrypt_file_aes_gcm(encrypted_path, key, nonce, tag)
+            decrypted_path = decrypt_file_aes_gcm(file_path, request.form.get('key'), request.form.get('nonce'), request.form.get('tag'))
         elif algorithm == 'chacha20':
-            decrypted_path = decrypt_file_chacha20(encrypted_path, key, nonce)
+            decrypted_path = decrypt_file_chacha20(file_path, request.form.get('key'), request.form.get('nonce'))
         elif algorithm == 'chacha20-poly1305':
-            decrypted_path = decrypt_file_chacha20_poly1305(encrypted_path, key, nonce)
+            decrypted_path = decrypt_file_chacha20_poly1305(file_path, request.form.get('key'), request.form.get('nonce'))
+        else:
+            return jsonify({"error": "Unsupported algorithm"}), 400
 
         return send_file(
             decrypted_path,
@@ -205,7 +149,8 @@ def decrypt_file():
             mimetype="application/octet-stream"
         )
     except Exception as e:
-        return jsonify({"error": f"Decryption failed: {str(e)}"}), 500
+        return jsonify({"error": f"Decryption failed: {str(e)}"}), 400
+
 
 
 # Processor benchmarking routes and functions

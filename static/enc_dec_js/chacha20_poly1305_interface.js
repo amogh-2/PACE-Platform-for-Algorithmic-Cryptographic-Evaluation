@@ -28,30 +28,37 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Encryption failed');
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Encryption failed');
+                });
             }
-            const key = response.headers.get('Key');
-            const nonce = response.headers.get('Nonce');
-            encryptionDetails.textContent = `Key: ${key}\nNonce: ${nonce}`;
-            return response.blob();
+            return response.json();
         })
-        .then(blob => {
-            const url = URL.createObjectURL(blob);
-            downloadLink.href = url;
+        .then(data => {
+            encryptionDetails.innerHTML = `
+                <p><strong>Key:</strong> ${data.key}</p>
+                <p><strong>Nonce:</strong> ${data.nonce}</p>
+                <p>Save these values for decryption!</p>
+            `;
+            downloadLink.href = data.encrypted_file;
             downloadLink.download = `${file.name}.enc`;
             downloadLink.style.display = 'inline-block';
             downloadLink.textContent = 'Download Encrypted File';
+
+            // Auto-fill decryption fields
+            decryptKey.value = data.key;
+            decryptNonce.value = data.nonce;
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Encryption failed. Please try again.');
+            encryptionDetails.innerHTML = `<p class="error">Encryption failed: ${error.message}</p>`;
         });
     });
 
     decryptButton.addEventListener('click', () => {
         const file = decryptFileInput.files[0];
         const key = decryptKey.value;
-        const nonce = decryptNonce.value;
+const nonce = decryptNonce.value;
 
         if (!file || !key || !nonce) {
             alert('Please provide a file, key, and nonce for decryption');
@@ -64,13 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('nonce', nonce);
         formData.append('algorithm', 'chacha20-poly1305');
 
+        decryptionDetails.textContent = 'Decrypting...';
+        decryptDownloadLink.style.display = 'none';
+
         fetch('/decrypt', {
             method: 'POST',
             body: formData
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Decryption failed');
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Decryption failed');
+                });
             }
             return response.blob();
         })
@@ -84,7 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Decryption failed. Please check your key and nonce.');
+            decryptionDetails.innerHTML = `<p class="error">Decryption failed: ${error.message}</p>`;
+            decryptDownloadLink.style.display = 'none';
         });
     });
 });
+
