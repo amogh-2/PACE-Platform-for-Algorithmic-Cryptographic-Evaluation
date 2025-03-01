@@ -11,7 +11,8 @@ from enc_dec_script.encrypt_chacha20 import encrypt_file_chacha20
 from enc_dec_script.encrypt_chacha20 import decrypt_file_chacha20
 from enc_dec_script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
 from enc_dec_script.encrypt_chacha20_poly1305  import decrypt_file_chacha20_poly1305
-from processor_page_script.aes_cbc import run_benchmark
+from processor_page_script.aes_cbc import run_cbc_benchmark
+from processor_page_script.aes_gcm import run_gcm_benchmark
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 CORS(app)
@@ -37,13 +38,13 @@ def index():
 def processor_choosing():
     return render_template("/processor_benchmarking/processor_choose.html")
 
-@app.route("/aes_cbc_128_pro")
-def aes_cbc_128_pro():
-    return render_template("/processor_benchmarking/processor_particular/aes-cbc-128-pro.html")
+# @app.route("/aes_cbc_128_pro")
+# def aes_cbc_128_pro():
+#     return render_template("/processor_benchmarking/processor_particular/aes-cbc-128-pro.html")
 
-@app.route("/aes_gcm_128_pro")
-def aes_gcm_128_pro():
-    return render_template("/processor_benchmarking/processor_particular/aes-gcm-128-pro.html")
+# @app.route("/aes_gcm_128_pro")
+# def aes_gcm_128_pro():
+#     return render_template("/processor_benchmarking/processor_particular/aes-gcm-128-pro.html")
 
 @app.route("/chacha20_poly1305_pro")
 def chacha20_poly1305_pro():
@@ -201,60 +202,61 @@ def decrypt_file():
 
 
 # Processor benchmarking routes and functions
-@app.route("/run_aes_cbc_benchmark", methods=["POST"])
-def aes_cbc_benchmark():
+ALGORITHMS = {
+    "AES-CBC": {
+        "benchmark_function": run_cbc_benchmark,
+        "route": "/aes_cbc_128_pro"
+    },
+    "AES-GCM": {
+        "benchmark_function": run_gcm_benchmark,
+        "route": "/aes_gcm_128_pro"
+    # },
+    # "ChaCha20": {
+    #     "benchmark_function": run_chacha20_benchmark,
+    #     "route": "/chacha20_pro"
+    # },
+    # "ChaCha20-Poly1305": {
+    #     "benchmark_function": run_chacha20_poly1305_benchmark,
+    #     "route": "/chacha20_poly1305_pro"
+    }
+}
+
+@app.route("/run_benchmark", methods=["POST"])
+def run_algorithm_benchmark():
     try:
         data = request.json
         file_size = data.get("fileSize", "5MB")
+        algorithm = data.get("algorithm")
         
-        # Run the benchmark
-        result = run_benchmark(file_size)
+        if algorithm not in ALGORITHMS:
+            return jsonify({"error": f"Unsupported algorithm: {algorithm}"}), 400
+        
+        # Run the benchmark for the specified algorithm
+        result = ALGORITHMS[algorithm]["benchmark_function"](file_size)
         
         if "error" in result:
             return jsonify({"error": result["error"]}), 500
-        
-        # Save result to file
-        save_benchmark_result(result)
         
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/get_aes_cbc_benchmark_results", methods=["GET"])
-def get_benchmark_results():
-    try:
-        results = load_benchmark_results()
-        return jsonify(results)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# Modify the existing route functions to include benchmarking
+@app.route("/aes_cbc_128_pro")
+def aes_cbc_128_pro():
+    return render_template("/processor_benchmarking/processor_particular/aes-cbc-128-pro.html", algorithm="AES-CBC")
 
-def save_benchmark_result(result):
-    """Save benchmark result to a JSON file"""
-    try:
-        # Load existing results
-        results = load_benchmark_results()
-        
-        # Add new result
-        results.append(result)
-        
-        # Save all results back to file
-        with open(AES_CBC_RESULTS_FILE, 'w') as f:
-            json.dump(results, f, indent=2)
-        print(f"Benchmark result saved to {AES_CBC_RESULTS_FILE}")
-    except Exception as e:
-        print(f"Error saving benchmark result: {e}")
+@app.route("/aes_gcm_128_pro")
+def aes_gcm_128_pro():
+    return render_template("/processor_benchmarking/processor_particular/aes-gcm-128-pro.html", algorithm="AES-GCM")
 
-def load_benchmark_results():
-    """Load benchmark results from the JSON file"""
-    if not os.path.exists(AES_CBC_RESULTS_FILE):
-        return []
-    
-    try:
-        with open(AES_CBC_RESULTS_FILE, 'r') as f:
-            return json.load(f)
-    except Exception as e:
-        print(f"Error loading benchmark results: {e}")
-        return []
+# @app.route("/chacha20_poly1305_pro")
+# def chacha20_poly1305_pro():
+#     return render_template("/processor_benchmarking/processor_particular/chacha20-poly1305-pro.html", algorithm="ChaCha20-Poly1305")
+
+# @app.route("/chacha20_pro")
+# def chacha20_pro():
+#     return render_template("/processor_benchmarking/processor_particular/chacha20pro.html", algorithm="ChaCha20")
 
 if __name__ == "__main__":
     app.run(debug=True)

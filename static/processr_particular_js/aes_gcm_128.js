@@ -1,3 +1,4 @@
+// aes_gcm_128.js
 document.addEventListener("DOMContentLoaded", () => {
     const runButton = document.querySelector(".run-button")
     const resultsTable = document.querySelector("table")
@@ -13,12 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedSize = fileSize.value
   
         // Call the benchmark endpoint
-        const response = await fetch("/run_aes_gcm_benchmark", {
+        const response = await fetch("/run_benchmark", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ fileSize: selectedSize }),
+          body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-GCM" }),
         })
   
         if (!response.ok) {
@@ -40,30 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Error running benchmark. Please try again.")
       }
     })
-  
-    // Load existing benchmark results when page loads
-    loadBenchmarkResults()
-  
-    async function loadBenchmarkResults() {
-      try {
-        const response = await fetch("/get_aes_gcm_benchmark_results")
-        if (response.ok) {
-          const results = await response.json()
-  
-          // Clear existing table rows except header
-          while (resultsTable.rows.length > 1) {
-            resultsTable.deleteRow(1)
-          }
-  
-          // Add each result to the table
-          results.forEach((result) => {
-            addResultRow(result)
-          })
-        }
-      } catch (error) {
-        console.error("Error loading benchmark results:", error)
-      }
-    }
   
     function updateResultsTable(result) {
       // Add the new result to the table
@@ -93,5 +70,3 @@ document.addEventListener("DOMContentLoaded", () => {
       execTimeCell.textContent = result.execution_time + "s"
     }
   })
-  
-  

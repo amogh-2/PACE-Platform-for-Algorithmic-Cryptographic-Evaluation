@@ -108,7 +108,7 @@ def create_test_file(size_mb):
     
     return test_file_path
 
-def run_benchmark(file_size):
+def run_cbc_benchmark(file_size):
     try:
         # Convert file size string to number
         size_mb = int(file_size.replace("MB", ""))
