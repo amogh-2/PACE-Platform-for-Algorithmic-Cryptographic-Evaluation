@@ -5,8 +5,8 @@ import base64
 
 def encrypt_file_aes_cbc(file):
     try:
-        key = os.urandom(16)  # AES_cbc-128 key (16 bytes)
-        iv = os.urandom(16)   # IV (16 bytes)
+        key = os.urandom(32)  # AES_cbc-128 key (32 bytes)
+        iv = os.urandom(16) # IV (16 bytes)
         
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         encryptor = cipher.encryptor()

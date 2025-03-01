@@ -3,43 +3,40 @@ from cryptography.hazmat.backends import default_backend
 import os
 import base64
 
-def encrypt_file_aes_cbc(file):
+def encrypt_file_aes_gcm(file):
     try:
-        key = os.urandom(16)  # AES_cbc-128 key (16 bytes)
-        iv = os.urandom(16)   # IV (16 bytes)
-        
-        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+        key = os.urandom(32)  # AES-256 key (32 bytes)
+        nonce = os.urandom(12)  # 96-bit nonce for GCM
+
+        cipher = Cipher(algorithms.AES(key), modes.GCM(nonce), backend=default_backend())
         encryptor = cipher.encryptor()
 
         file_data = file.read()
-        # Proper PKCS7 padding
-        pad_length = 16 - (len(file_data) % 16)
-        padded_data = file_data + bytes([pad_length] * pad_length)
-        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+        encrypted_data = encryptor.update(file_data) + encryptor.finalize()
         
         return {
             "encrypted_data": base64.b64encode(encrypted_data).decode(),
             "key": base64.b64encode(key).decode(),
-            "iv": base64.b64encode(iv).decode(),
+            "nonce": base64.b64encode(nonce).decode(),
+            "tag": base64.b64encode(encryptor.tag).decode(),
         }
     except Exception as e:
         return {"error": f"Encryption failed: {str(e)}"}
     
-def decrypt_file_aes_cbc(filepath, key_b64, iv_b64):
+
+def decrypt_file_aes_gcm(filepath, key_b64, nonce_b64, tag_b64):
     try:
         key = base64.b64decode(key_b64)
-        iv = base64.b64decode(iv_b64)
+        nonce = base64.b64decode(nonce_b64)
+        tag = base64.b64decode(tag_b64)
 
         with open(filepath, 'rb') as file:
             encrypted_data = file.read()
 
-        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+        cipher = Cipher(algorithms.AES(key), modes.GCM(nonce, tag), backend=default_backend())
         decryptor = cipher.decryptor()
         
         decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
-
-        pad_length = decrypted_data[-1]
-        decrypted_data = decrypted_data[:-pad_length]
 
         decrypted_filepath = filepath.replace(".enc", ".dec")
         with open(decrypted_filepath, 'wb') as file:

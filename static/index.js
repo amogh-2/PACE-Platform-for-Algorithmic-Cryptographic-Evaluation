@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const aesGcmButton = document.getElementById("aesGcmButton")
   const chacha20Button = document.getElementById("chacha20Button")
   const chacha20Poly1305Button = document.getElementById("chacha20Poly1305Button")
-  const kyberAesButton = document.getElementById("kyberAesButton")
+  const aesCbc256Button = document.getElementById("aesCbc256Button")
+  const aesGcm256Button = document.getElementById("aesCbc256Button")
   const processorBenchmarkButton = document.getElementById("processorBenchmarkButton")
   
   aesCbcButton.addEventListener("click", () => {
@@ -22,10 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/chacha20_poly1305_enc_dec"
   })
 
-  kyberAesButton.addEventListener("click", () => {
+  aesCbc256Button.addEventListener("click", () => {
     window.location.href = "/kyber_aes_enc_dec"
   })
-
+  aesGcm256Button.addEventListener("click", () => {
+    window.location.href = "/kyber_aes_enc_dec"
+  })
   processorBenchmarkButton.addEventListener("click", () => {
     window.location.href = "/processor_choosing"
   })
