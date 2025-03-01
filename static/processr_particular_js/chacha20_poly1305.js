@@ -1,4 +1,3 @@
-// aes_gcm_128.js
 document.addEventListener("DOMContentLoaded", () => {
     const runButton = document.querySelector(".run-button")
     const resultsTable = document.querySelector("table tbody")
@@ -22,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-GCM" }),
+          body: JSON.stringify({ fileSize: selectedSize, algorithm: "ChaCha20-Poly1305" }),
         })
   
         if (!response.ok) {
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedSize = fileSize.value
   
         // Call the API to get existing results
-        const response = await fetch(`/get_benchmark_results?algorithm=AES-GCM&fileSize=${selectedSize}`)
+        const response = await fetch(`/get_benchmark_results?algorithm=ChaCha20-Poly1305&fileSize=${selectedSize}`)
   
         if (!response.ok) {
           throw new Error("Failed to load benchmark results")

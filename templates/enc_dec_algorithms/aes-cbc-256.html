@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyber-512 with ChaCha20-Poly1305 Encryption & Decryption</title>
+    <title>AES_CBC-256 File Encryption & Decryption</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,26 +62,23 @@
 </head>
 <body>
     <div class="container">
-        <h2>Encrypt a File with Kyber-512 and ChaCha20-Poly1305</h2>
+        <h2>Encrypt a File with AES_CBC-256</h2>
         <input type="file" id="encryptFileInput">
         <button id="encryptButton">Encrypt</button>
         <div id="encryption-details"></div>
-        <a id="download-encrypted-link" style="display: none;" download>Download Encrypted File</a>
-        <a id="download-info-link" style="display: none;" download>Download Encryption Info</a>
+        <a id="download-link" style="display: none;" download>Download Encrypted File</a>
     </div>
 
     <div class="container">
-        <h2>Decrypt a File with Kyber-512 and ChaCha20-Poly1305</h2>
+        <h2>Decrypt a File with AES_CBC-256</h2>
         <input type="file" id="decryptFileInput">
-        <input type="text" id="decryptEncryptedKey" placeholder="Enter Encrypted Key">
-        <input type="text" id="decryptSecretKey" placeholder="Enter Secret Key">
-        <input type="text" id="decryptNonce" placeholder="Enter Nonce">
-        <input type="text" id="decryptTag" placeholder="Enter Tag">
+        <input type="text" id="decryptKey" placeholder="Enter Key">
+        <input type="text" id="decryptIV" placeholder="Enter IV">
         <button id="decryptButton">Decrypt</button>
         <div id="decryption-details"></div>
         <a id="decrypt-download-link" style="display: none;" download>Download Decrypted File</a>
     </div>
 
-    <script src="static/enc_dec_js/kyber_chacha20poly_interface.js"></script>
+    <script src="static/enc_dec_js/aes_cbc_256_interface.js"></script>
 </body>
 </html>

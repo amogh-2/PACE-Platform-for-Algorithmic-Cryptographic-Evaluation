@@ -6,6 +6,8 @@ import base64
 import platform
 import subprocess
 import re
+import json
+from datetime import datetime
 
 def encrypt_file_aes_cbc(file_path):
     try:
@@ -108,7 +110,26 @@ def create_test_file(size_mb):
     
     return test_file_path
 
-def run_cbc_benchmark(file_size):
+def save_benchmark_result(result, benchmark_folder):
+    """Save benchmark result to a text file"""
+    # Create the benchmark results directory if it doesn't exist
+    os.makedirs(benchmark_folder, exist_ok=True)
+    
+    # Create a filename based on the algorithm and file size
+    filename = f"aes_cbc_{result['file_size']}.txt"
+    filepath = os.path.join(benchmark_folder, filename)
+    
+    # Format the result as a single line with timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    result_line = f"{timestamp},{result['cpu_model']},{result['os_name']},{result['file_size']},{result['encryption_time']},{result['decryption_time']},{result['execution_time']}\n"
+    
+    # Append the result to the file
+    with open(filepath, 'a') as f:
+        f.write(result_line)
+    
+    return filepath
+
+def run_cbc_benchmark(file_size, benchmark_folder="benchmark_results"):
     try:
         # Convert file size string to number
         size_mb = int(file_size.replace("MB", ""))
@@ -154,7 +175,9 @@ def run_cbc_benchmark(file_size):
             "execution_time": round(execution_time, 3)
         }
         
+        # Save the result to a text file
+        save_benchmark_result(result, benchmark_folder)
+        
         return result
     except Exception as e:
         return {"error": str(e)}
-

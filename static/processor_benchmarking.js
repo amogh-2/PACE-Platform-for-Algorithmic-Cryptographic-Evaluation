@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const aes128gcm = document.getElementById("aes128gcm")
     const chacha20 = document.getElementById("chacha20")
     const chacha20poly1305= document.getElementById("chacha20poly1305")
-    const kyberaes = document.getElementById("kyberaes")
-    const kyberchacha20poly = document.getElementById("kyberchacha20poly")
+    const aes256cbcButton = document.getElementById("aes256cbc")
+    const aes256gcmButton = document.getElementById("aes256gcm")
     
     aes128cbc.addEventListener("click", () => {
       window.location.href = "/aes_cbc_128_pro"
@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "/chacha20_poly1305_pro"
     })
   
-    kyberaes.addEventListener("click", () => {
-      window.location.href = "/kyber_aes_pro"
+    aes256cbcButton.addEventListener("click", () => {
+      window.location.href = "/aes_256_cbc_pro"
     })
   
-    kyberchacha20poly.addEventListener("click", () => {
-      window.location.href = "/kyber_chacha20_poly1305_pro"
+    aes256gcmButton.addEventListener("click", () => {
+      window.location.href = "/aes_256_gcm_pro"
     })
   
   })

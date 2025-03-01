@@ -1,4 +1,3 @@
-// aes_cbc_128.js
 document.addEventListener("DOMContentLoaded", () => {
   const runButton = document.querySelector(".run-button")
   const resultsTable = document.querySelector("table tbody")
@@ -22,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-CBC" }),
+        body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-256-CBC" }),
       })
 
       if (!response.ok) {
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const selectedSize = fileSize.value
 
       // Call the API to get existing results
-      const response = await fetch(`/get_benchmark_results?algorithm=AES-CBC&fileSize=${selectedSize}`)
+      const response = await fetch(`/get_benchmark_results?algorithm=AES-256-CBC&fileSize=${selectedSize}`)
 
       if (!response.ok) {
         throw new Error("Failed to load benchmark results")

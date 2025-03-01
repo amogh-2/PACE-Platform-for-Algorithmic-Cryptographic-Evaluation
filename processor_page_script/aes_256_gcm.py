@@ -12,7 +12,7 @@ from datetime import datetime
 def encrypt_file_aes_gcm(file_path):
     try:
         execution_time = time.perf_counter()
-        key = os.urandom(16)  # AES-128 key (16 bytes)
+        key = os.urandom(32)  # AES-256 key (32 bytes)
         nonce = os.urandom(12)  # GCM typically uses 12 bytes for nonce
         
         cipher = Cipher(algorithms.AES(key), modes.GCM(nonce), backend=default_backend())
@@ -125,7 +125,7 @@ def save_benchmark_result(result, benchmark_folder):
     
     return filepath
 
-def run_gcm_benchmark(file_size, benchmark_folder="benchmark_results"):
+def run_aes_256_gcm_benchmark(file_size, benchmark_folder="benchmark_results"):
     try:
         # Convert file size string to number
         size_mb = int(file_size.replace("MB", ""))

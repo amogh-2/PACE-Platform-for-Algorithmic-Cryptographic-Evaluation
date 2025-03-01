@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyber-512 with AES-GCM-256 Encryption & Decryption</title>
+    <title>AES-256-GCM File Encryption & Decryption</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,19 +62,17 @@
 </head>
 <body>
     <div class="container">
-        <h2>Encrypt a File with Kyber-512 and AES-GCM-256</h2>
+        <h2>Encrypt a File with AES-256-GCM</h2>
         <input type="file" id="encryptFileInput">
         <button id="encryptButton">Encrypt</button>
         <div id="encryption-details"></div>
-        <a id="download-encrypted-link" style="display: none;" download>Download Encrypted File</a>
-        <a id="download-info-link" style="display: none;" download>Download Encryption Info</a>
+        <a id="download-link" style="display: none;" download>Download Encrypted File</a>
     </div>
 
     <div class="container">
-        <h2>Decrypt a File with Kyber-512 and AES-GCM-256</h2>
+        <h2>Decrypt a File with AES-256-GCM</h2>
         <input type="file" id="decryptFileInput">
-        <input type="text" id="decryptEncryptedKey" placeholder="Enter Encrypted Key">
-        <input type="text" id="decryptSecretKey" placeholder="Enter Secret Key">
+        <input type="text" id="decryptKey" placeholder="Enter Key">
         <input type="text" id="decryptNonce" placeholder="Enter Nonce">
         <input type="text" id="decryptTag" placeholder="Enter Tag">
         <button id="decryptButton">Decrypt</button>
@@ -82,6 +80,6 @@
         <a id="decrypt-download-link" style="display: none;" download>Download Decrypted File</a>
     </div>
 
-    <script src="static/enc_dec_js/kyber_aes_interface.js"></script>
+    <script src="static/enc_dec_js/aes_gcm_256_interface.js"></script>
 </body>
 </html>

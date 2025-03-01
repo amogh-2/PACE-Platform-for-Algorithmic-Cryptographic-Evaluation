@@ -9,59 +9,63 @@ import re
 import json
 from datetime import datetime
 
-def encrypt_file_aes_gcm(file_path):
+def encrypt_file_aes_cbc(file_path):
     try:
         execution_time = time.perf_counter()
-        key = os.urandom(16)  # AES-128 key (16 bytes)
-        nonce = os.urandom(12)  # GCM typically uses 12 bytes for nonce
+        key = os.urandom(32)  # AES_cbc-256 key (32ytes)
+        iv = os.urandom(16)   # IV (16 bytes)
         
-        cipher = Cipher(algorithms.AES(key), modes.GCM(nonce), backend=default_backend())
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         encryptor = cipher.encryptor()
 
         with open(file_path, 'rb') as file:
             file_data = file.read()
             
         start_time = time.perf_counter()
-        encrypted_data = encryptor.update(file_data) + encryptor.finalize()
-        auth_tag = encryptor.tag
+        pad_length = 16 - (len(file_data) % 16)
+        padded_data = file_data + bytes([pad_length] * pad_length)
+        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
         encryption_time = time.perf_counter() - start_time
         
-        # Save encrypted data and auth tag for decryption test
+        # Save encrypted data for decryption test
         encrypted_file_path = file_path + ".enc"
         with open(encrypted_file_path, 'wb') as file:
-            file.write(encrypted_data + auth_tag)
+            file.write(encrypted_data)
             
         execution_time_enc = time.perf_counter() - execution_time
         
-        # Return key and nonce for decryption
+        # Return key and iv for decryption
         return {
             "encryption_time": encryption_time,
             "execution_time_enc": execution_time_enc,
             "key": base64.b64encode(key).decode('utf-8'),
-            "nonce": base64.b64encode(nonce).decode('utf-8'),
+            "iv": base64.b64encode(iv).decode('utf-8'),
             "encrypted_file_path": encrypted_file_path
         }
     except Exception as e:
         return {"error": f"Encryption failed: {str(e)}"}
 
 
-def decrypt_file_aes_gcm(filepath, key_b64, nonce_b64):
+def decrypt_file_aes_cbc(filepath, key_b64, iv_b64):
     try:
         execution_time = time.perf_counter()
         key = base64.b64decode(key_b64)
-        nonce = base64.b64decode(nonce_b64)
+        iv = base64.b64decode(iv_b64)
 
         with open(filepath, 'rb') as file:
-            data = file.read()
-        
-        auth_tag = data[-16:]  # Last 16 bytes are the auth tag
-        encrypted_data = data[:-16]
+            encrypted_data = file.read()
 
-        cipher = Cipher(algorithms.AES(key), modes.GCM(nonce, auth_tag), backend=default_backend())
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         decryptor = cipher.decryptor()
         
         start_time = time.perf_counter()
         decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
+
+        # Remove padding
+        padding_length = decrypted_data[-1] if isinstance(decrypted_data[-1], int) else ord(decrypted_data[-1])
+        if padding_length < 16:
+            decrypted_data = decrypted_data[:-padding_length]
+            
         decryption_time = time.perf_counter() - start_time
         execution_time_dec = time.perf_counter() - execution_time
         
@@ -112,7 +116,7 @@ def save_benchmark_result(result, benchmark_folder):
     os.makedirs(benchmark_folder, exist_ok=True)
     
     # Create a filename based on the algorithm and file size
-    filename = f"aes_gcm_{result['file_size']}.txt"
+    filename = f"aes_cbc_{result['file_size']}.txt"
     filepath = os.path.join(benchmark_folder, filename)
     
     # Format the result as a single line with timestamp
@@ -125,7 +129,7 @@ def save_benchmark_result(result, benchmark_folder):
     
     return filepath
 
-def run_gcm_benchmark(file_size, benchmark_folder="benchmark_results"):
+def run_aes_256_cbc_benchmark(file_size, benchmark_folder="benchmark_results"):
     try:
         # Convert file size string to number
         size_mb = int(file_size.replace("MB", ""))
@@ -137,16 +141,16 @@ def run_gcm_benchmark(file_size, benchmark_folder="benchmark_results"):
         cpu_model, os_name = get_system_info()
         
         # Run encryption benchmark
-        encryption_result = encrypt_file_aes_gcm(file_path)
+        encryption_result = encrypt_file_aes_cbc(file_path)
         
         if "error" in encryption_result:
             return {"error": encryption_result["error"]}
         
         # Run decryption benchmark
-        decryption_result = decrypt_file_aes_gcm(
+        decryption_result = decrypt_file_aes_cbc(
             encryption_result["encrypted_file_path"],
             encryption_result["key"],
-            encryption_result["nonce"]
+            encryption_result["iv"]
         )
         
         if "error" in decryption_result:
@@ -177,4 +181,3 @@ def run_gcm_benchmark(file_size, benchmark_folder="benchmark_results"):
         return result
     except Exception as e:
         return {"error": str(e)}
-

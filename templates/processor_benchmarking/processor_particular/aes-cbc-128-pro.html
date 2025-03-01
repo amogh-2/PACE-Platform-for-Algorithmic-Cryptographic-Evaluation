@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AES-CBC Benchmark</title>
+    <title>AES-256 GCM Benchmark</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,17 +45,16 @@
     </style>
 </head>
 <body>
-    <h2>AES-CBC (128-bit Key) Encryption</h2>
+    <h2>AES-128 GCM Encryption</h2>
     <p>
-        AES (Advanced Encryption Standard) in Cipher Block Chaining (CBC) mode is a symmetric encryption algorithm 
-        that encrypts data in fixed-size blocks. Each block is XORed with the previous encrypted block to enhance security.
-        A 128-bit key is commonly used for balance between security and performance.
+        AES (Advanced Encryption Standard) with a 256-bit key in Galois/Counter Mode (GCM) is a highly secure symmetric encryption algorithm. 
+        GCM provides both confidentiality and authenticity, making it suitable for secure communication and data storage.
     </p>
 
     <div class="benchmark-section">
-        <h3>Help Us Benchmark AES-CBC</h3>
+        <h3>Help Us Benchmark AES-256 GCM</h3>
         <p>
-            Select a file size and click "Run Benchmark" to contribute to performance testing of AES-CBC encryption and decryption.
+            Select a file size and click "Run Benchmark" to contribute to performance testing of AES-256 GCM encryption and decryption.
         </p>
         <label for="file-size">Choose a file size:</label>
         <select id="file-size">
@@ -68,17 +67,21 @@
 
     <h3>Benchmarking Results</h3>
     <table>
-        <tr>
-            <th>CPU Model</th>
-            <th>OS Name</th>
-            <th>File Size</th>
-            <th>Encryption Time</th>
-            <th>Decryption Time</th>
-            <th>Execution Time</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>CPU Model</th>
+                <th>OS Name</th>
+                <th>File Size</th>
+                <th>Encryption Time</th>
+                <th>Decryption Time</th>
+                <th>Execution Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Results will be dynamically inserted here -->
+        </tbody>
     </table>
 
-    <!-- Make sure this path matches exactly -->
     <script src="static/processr_particular_js/aes_cbc_128.js"></script>
 </body>
 </html>
