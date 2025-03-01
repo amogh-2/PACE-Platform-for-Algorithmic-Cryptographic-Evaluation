@@ -38,5 +38,13 @@
     "encryption_time": 0.011,
     "decryption_time": 0.006,
     "execution_time": 0.023
+  },
+  {
+    "cpu_model": "Intel(R)(TM) i7-10510U CPU @ 1.80GHz",
+    "os_name": "Linux",
+    "file_size": "5MB",
+    "encryption_time": 0.01,
+    "decryption_time": 0.005,
+    "execution_time": 0.02
   }
 ]
