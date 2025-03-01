@@ -4,13 +4,13 @@ import base64
 import json
 from flask_cors import CORS
 from enc_dec_script.encrypt_aes_cbc import encrypt_file_aes_cbc
-from enc_dec_script.decrypt_aes_cbc import decrypt_file_aes_cbc
+from enc_dec_script.encrypt_aes_cbc import decrypt_file_aes_cbc
 from enc_dec_script.encrypt_aes_gcm import encrypt_file_aes_gcm
-from enc_dec_script.decrypt_aes_gcm import decrypt_file_aes_gcm
+from enc_dec_script.encrypt_aes_gcm import decrypt_file_aes_gcm
 from enc_dec_script.encrypt_chacha20 import encrypt_file_chacha20
-from enc_dec_script.decrypt_chacha20 import decrypt_file_chacha20
+from enc_dec_script.encrypt_chacha20 import decrypt_file_chacha20
 from enc_dec_script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305
-from enc_dec_script.decrypt_chacha20_poly1305 import decrypt_file_chacha20_poly1305
+from enc_dec_script.encrypt_chacha20_poly1305  import decrypt_file_chacha20_poly1305
 from processor_page_script.aes_cbc import run_benchmark
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
