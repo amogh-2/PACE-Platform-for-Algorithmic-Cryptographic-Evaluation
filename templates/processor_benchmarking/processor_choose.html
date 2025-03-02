@@ -4,56 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Benchmarking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 80%;
-        }
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 250px;
-            margin: 15px;
-            cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .card:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
-        h2 {
-            text-align: center;
-            width: 100%;
-        }
     </style>
 </head>
-<body>
-    <h2>Choose an Algorithm for Benchmarking</h2>
-    <div class="container">
-        <div class="card" id="aes128cbc">AES-128-CBC</div>
-        <div class="card" id="chacha20">ChaCha20</div>
-        <div class="card" id="chacha20poly1305">ChaCha20-Poly1305</div>
-        <div class="card" id="aes128gcm">AES-GCM-128</div>
-        <div class="card" id="aes256gcm">AES-GCM-256</div>
-        <div class="card" id="aes256cbc">AES-CBC-256</div>
-        
+<body class="font-sans bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen">
+    <div class="max-w-4xl w-full px-6 sm:px-8 py-10 text-center">
+        <h1 class="text-3xl font-extrabold text-white mb-6">Benchmarking Based on Processor</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="aes128cbc" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">AES-CBC (128 Bit Key)</h3>
+                <p class="text-gray-400">Advanced Encryption Standard in Cipher Block Chaining mode with 128-bit key</p>
+            </div>
+            <div id="aes256cbc" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">AES-CBC (256 Bit Key)</h3>
+                <p class="text-gray-400">Advanced Encryption Standard in Cipher Block Chaining mode with 256-bit key</p>
+            </div>
+            <div id="aes128gcm" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">AES-GCM (128 Bit Key)</h3>
+                <p class="text-gray-400">Advanced Encryption Standard in Galois/Counter Mode with 128-bit key</p>
+            </div>
+            <div id="aes256gcm" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">AES-GCM (256 Bit Key)</h3>
+                <p class="text-gray-400">Advanced Encryption Standard in Galois/Counter Mode with 256-bit key</p>
+            </div>
+            <div id="chacha20" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">ChaCha20</h3>
+                <p class="text-gray-400">ChaCha20 Stream Cipher with 256-bit Key and 16 byte nonce</p>
+            </div>
+            <div id="chacha20poly1305" class="card p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 cursor-pointer">
+                <h3 class="text-xl font-semibold text-white">ChaCha20-Poly1305</h3>
+                <p class="text-gray-400">ChaCha20 Stream Cipher with Poly1305 Authentication and 256-bit Key</p>
+            </div>
+        </div>
     </div>
 
-    <script src="static/processor_benchmarking.js"></script>
+    <!-- External JavaScript Link -->
+    <script src="static/processor_benchmarking.js" defer></script>
 </body>
 </html>

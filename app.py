@@ -35,9 +35,16 @@ for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INF
 def index():
     return render_template("/index.html")
 
-@app.route("/aes_cbc_256_enc_dec") 
-def aes_cbc_256_enc_dec():
-    return render_template("/enc_dec_algorithms/aes-cbc-256.html")
+@app.route("/media") 
+def media():
+    return render_template("/media_types/media.html")
+@app.route("/pqc") 
+def pqc():
+    return render_template("/pqc.html")
+
+@app.route("/strength_benchmarking") 
+def strength():
+    return render_template("/strength_benchmarking/strength.html")
 
 @app.route("/aes_gcm_256_enc_dec") 
 def aes_gcm_256_enc_dec():
@@ -62,6 +69,10 @@ def kyber_aes_pro():
 @app.route("/aes_cbc_enc_dec")
 def aes_cbc_enc_dec():
     return render_template("enc_dec_algorithms/aes-cbc-128.html")
+
+@app.route("/aes_cbc_256_enc_dec")
+def aes_cbc_256_enc_dec():
+    return render_template("/enc_dec_algorithms/aes-cbc-256.html")
 
 @app.route("/aes_gcm_enc_dec")
 def aes_gcm_enc_dec():

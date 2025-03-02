@@ -7,17 +7,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* Custom styles from skeleton + modern enhancements */
+        /* Custom styles combining modern enhancements */
         .gradient-bg {
             background: linear-gradient(135deg, #1e3a8a, #6b7280);
         }
         .hover-transform {
             transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger base shadow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         .hover-transform:hover {
             transform: translateY(-0.25rem);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); /* Darker and larger hover shadow */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
         }
         .fade-in {
             animation: fadeIn 1s ease-in-out;
@@ -26,7 +26,6 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
-        /* Logo-specific styles */
         .logo-modern {
             transition: transform 0.3s ease, filter 0.3s ease;
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
@@ -35,10 +34,9 @@
             transform: scale(1.1);
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
         }
-        /* Header styles */
         header {
             transition: transform 0.3s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         header.hidden {
             transform: translateY(-100%);
@@ -46,32 +44,29 @@
     </style>
 </head>
 <body class="font-sans bg-gray-900 text-gray-100 min-h-screen">
-    <!-- Header Section (Filled with Logo, Title, and Navbar) -->
+    <!-- Header Section -->
     <header class="fixed top-0 left-0 w-full z-50 bg-gray-900">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 py-4 flex justify-between items-center">
-            <!-- Logo and Title (Left Side, Non-Clickable) -->
             <div class="flex items-center space-x-2">
                 <img src="https://img.icons8.com/ios-filled/150/ffffff/lock.png" alt="PACE Logo" 
                      class="w-8 h-8 md:w-10 md:h-10 logo-modern">
                 <span class="text-2xl font-semibold text-white">PACE</span>
             </div>
-            <!-- Navigation (Right Side) -->
             <nav class="flex items-center space-x-6">
                 <a href="#algorithms" class="text-lg text-gray-200 hover:text-white transition-colors">Algorithms</a>
                 <a href="#benchmark-categories" class="text-lg text-gray-200 hover:text-white transition-colors">Benchmarks</a>
-                <a href="#" class="text-lg text-gray-200 hover:text-white transition-colors">About</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section with Reduced Size -->
+    <!-- Hero Section -->
     <div class="gradient-bg text-white py-12 pt-20">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 text-center fade-in">
             <img src="https://img.icons8.com/ios-filled/150/ffffff/lock.png" alt="Cryptographic Framework Logo" 
                  class="mx-auto mb-4 w-20 h-20 md:w-24 md:h-24 logo-modern">
             <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-3">Platform for Algorithmic Cryptographic Evaluation</h1>
-            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-                In today's digital world, security is everything. Cryptographic algorithms help protect our data, but how do we know which one is the best for different situations? This framework provides a way to test and compare various encryption and decryption algorithms based on different factors like performance, strength, and efficiency.
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                Measure, Compare and Evaluate Cryptographic Algorithms. A Unified Platform for Performance Benchmarking and Security Evaluation.
             </p>
             <a href="#algorithms" class="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors">
                 Get Started
@@ -83,27 +78,27 @@
     <section id="algorithms" class="max-w-7xl mx-auto px-6 sm:px-8 py-10">
         <h2 class="text-2xl md:text-3xl font-semibold text-white mb-6 text-center">Encryption & Decryption Algorithms</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div id="aesCbcButton" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="aesCbcButton" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">AES-CBC (128 Bit Key)</h3>
                 <p class="text-gray-400">Advanced Encryption Standard in Cipher Block Chaining mode with 128-bit key</p>
             </div>
-            <div id="aesCbc256Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="aesCbc256Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">AES-CBC (256 Bit Key)</h3>
                 <p class="text-gray-400">Advanced Encryption Standard in Cipher Block Chaining mode with 256-bit key</p>
             </div>
-            <div id="aesGcmButton" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="aesGcmButton" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">AES-GCM (128 Bit Key)</h3>
                 <p class="text-gray-400">Advanced Encryption Standard in Galois/Counter Mode with 128-bit key</p>
             </div>
-            <div id="aesGcm256Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="aesGcm256Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">AES-GCM (256 Bit Key)</h3>
                 <p class="text-gray-400">Advanced Encryption Standard in Galois/Counter Mode with 256-bit key</p>
             </div>
-            <div id="chacha20Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="chacha20Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">ChaCha20</h3>
                 <p class="text-gray-400">ChaCha20 Stream Cipher with 256-bit Key and 16 byte nonce</p>
             </div>
-            <div id="chacha20Poly1305Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform transition-transform transform cursor-pointer">
+            <div id="chacha20Poly1305Button" class="p-6 border rounded-lg shadow-md bg-gray-800 hover:bg-gray-700 hover-transform cursor-pointer">
                 <h3 class="text-xl font-semibold text-white">ChaCha20-Poly</h3>
                 <p class="text-gray-400">ChaCha20 Stream Cipher with Poly1305 Authentication and 256-bit Key</p>
             </div>
@@ -112,9 +107,9 @@
 
     <!-- Benchmark Categories Section -->
     <section id="benchmark-categories" class="max-w-7xl mx-auto px-6 sm:px-8 py-10">
-        <h2 class="text-2xl md:text-3xl font-semibold text-white mb-6 text-center">Benchmark Categories</h2>
+        <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 text-center">Benchmark Categories</h2>
         <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
-            <a href="benchmarksections/media_types.html" class="p-6 border border-gray-700 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between transition-transform transform">
+            <div id="mediaBenchmarkButton" class="p-6 border border-gray-400 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between cursor-pointer">
                 <div>
                     <h3 class="text-xl font-semibold text-white mb-2">Benchmark Based on Media Types</h3>
                     <p class="text-gray-400">Test the performance of algorithms across different media types.</p>
@@ -122,8 +117,8 @@
                 <div class="text-4xl text-white">
                     <i class="fas fa-film"></i>
                 </div>
-            </a>
-            <div id="processorBenchmarkButton" class="p-6 border border-gray-700 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between transition-transform transform cursor-pointer">
+            </div>
+            <div id="processorBenchmarkButton" class="p-6 border border-gray-400 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between cursor-pointer">
                 <div>
                     <h3 class="text-xl font-semibold text-white mb-2">Benchmark Based on Processors</h3>
                     <p class="text-gray-400">Analyze performance across different processor architectures.</p>
@@ -132,7 +127,7 @@
                     <i class="fas fa-microchip"></i>
                 </div>
             </div>
-            <a href="benchmarksections/strength.html" class="p-6 border border-gray-700 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between transition-transform transform">
+            <div id="strengthBenchmarkButton" class="p-6 border border-gray-400 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between cursor-pointer">
                 <div>
                     <h3 class="text-xl font-semibold text-white mb-2">Benchmark Based on Strength</h3>
                     <p class="text-gray-400">Evaluate the strength of algorithms under various attack scenarios.</p>
@@ -140,8 +135,8 @@
                 <div class="text-4xl text-white">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-            </a>
-            <a href="benchmarksections/pqc.html" class="p-6 border border-gray-700 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between transition-transform transform">
+            </div>
+            <div id="pqcBenchmarkButton" class="p-6 border border-gray-400 rounded-lg shadow-lg bg-gray-800 hover:bg-gray-700 hover-transform flex items-center justify-between cursor-pointer">
                 <div>
                     <h3 class="text-xl font-semibold text-white mb-2">Post-Quantum Cryptography</h3>
                     <p class="text-gray-400">Analyze performance across different processor architectures.</p>
@@ -149,145 +144,25 @@
                 <div class="text-4xl text-white">
                     <i class="fas fa-microchip"></i>
                 </div>
-            </a>
+            </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-950 text-center py-5 text-gray-400">
-        <p>© 2025 Universal Framework | All rights reserved.</p>
-    </footer>
-
-    <!-- Cloudflare Scripts -->
-    <script>
-        (function() {
-            function c() {
-                var b = a.contentDocument || a.contentWindow.document;
-                if (b) {
-                    var d = b.createElement('script');
-                    d.innerHTML = "window.__CF$cv$params={r:'9199d3725e408bb9',t:'MTc0MDg0NDM5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-                    b.getElementsByTagName('head')[0].appendChild(d);
-                }
-            }
-            if (document.body) {
-                var a = document.createElement('iframe');
-                a.height = 1;
-                a.width = 1;
-                a.style.position = 'absolute';
-                a.style.top = 0;
-                a.style.left = 0;
-                a.style.border = 'none';
-                a.style.visibility = 'hidden';
-                document.body.appendChild(a);
-                if ('loading' !== document.readyState) c();
-                else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
-                else {
-                    var e = document.onreadystatechange || function() {};
-                    document.onreadystatechange = function(b) {
-                        e(b);
-                        'loading' !== document.readyState && (document.onreadystatechange = e, c());
-                    };
-                }
-            }
-        })();
-    </script>
-    <script>
-        (function() {
-            function c() {
-                var b = a.contentDocument || a.contentWindow.document;
-                if (b) {
-                    var d = b.createElement('script');
-                    d.innerHTML = "window.__CF$cv$params={r:'9199eb218a816732',t:'MTc0MDg0NTM2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-                    b.getElementsByTagName('head')[0].appendChild(d);
-                }
-            }
-            if (document.body) {
-                var a = document.createElement('iframe');
-                a.height = 1;
-                a.width = 1;
-                a.style.position = 'absolute';
-                a.style.top = 0;
-                a.style.left = 0;
-                a.style.border = 'none';
-                a.style.visibility = 'hidden';
-                document.body.appendChild(a);
-                if ('loading' !== document.readyState) c();
-                else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
-                else {
-                    var e = document.onreadystatechange || function() {};
-                    document.onreadystatechange = function(b) {
-                        e(b);
-                        'loading' !== document.readyState && (document.onreadystatechange = e, c());
-                    };
-                }
-            }
-        })();
-    </script>
-    <script>
-        (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'919acdd1f902bfc2',t:'MTc0MDg1NDY0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
-    </script>
-    <script>
-        (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'919f9f749a4f7bca',t:'MTc0MDkwNTE3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
-    </script>
-
     <!-- Scroll Behavior Script -->
     <script>
         let lastScrollTop = 0;
         const header = document.querySelector('header');
-
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
             if (scrollTop > lastScrollTop && scrollTop > 50) {
-                // Scrolling down and past 50px
                 header.classList.add('hidden');
             } else {
-                // Scrolling up or near top
                 header.classList.remove('hidden');
             }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative scroll
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
     </script>
 
-    <!-- Integrated index.js Script -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const aesCbcButton = document.getElementById("aesCbcButton");
-            const aesGcmButton = document.getElementById("aesGcmButton");
-            const chacha20Button = document.getElementById("chacha20Button");
-            const chacha20Poly1305Button = document.getElementById("chacha20Poly1305Button");
-            const aesCbc256Button = document.getElementById("aesCbc256Button");
-            const aesGcm256Button = document.getElementById("aesGcm256Button");
-            const processorBenchmarkButton = document.getElementById("processorBenchmarkButton");
-
-            aesCbcButton.addEventListener("click", () => {
-                window.location.href = "/aes_cbc_enc_dec";
-            });
-
-            aesGcmButton.addEventListener("click", () => {
-                window.location.href = "/aes_gcm_enc_dec";
-            });
-
-            chacha20Button.addEventListener("click", () => {
-                window.location.href = "/chacha20_enc_dec";
-            });
-
-            chacha20Poly1305Button.addEventListener("click", () => {
-                window.location.href = "/chacha20_poly1305_enc_dec";
-            });
-
-            aesCbc256Button.addEventListener("click", () => {
-                window.location.href = "/aes_cbc_256_enc_dec";
-            });
-
-            aesGcm256Button.addEventListener("click", () => {
-                window.location.href = "/aes_gcm_256_enc_dec";
-            });
-
-            processorBenchmarkButton.addEventListener("click", () => {
-                window.location.href = "/processor_choosing";
-            });
-        });
-    </script>
+    <!-- External JavaScript Link -->
+    <script src="static/index.js"></script>
 </body>
 </html>
