@@ -4,6 +4,8 @@ import base64
 import json
 from flask_cors import CORS
 from enc_dec_script.encrypt_aes_cbc import encrypt_file_aes_cbc, decrypt_file_aes_cbc
+from enc_dec_script.encrypt_aes_cbc_256 import encrypt_file_aes_cbc_256, decrypt_file_aes_cbc_256
+from enc_dec_script.encrypt_aes_gcm_256 import encrypt_file_aes_gcm_256, decrypt_file_aes_gcm_256
 from enc_dec_script.encrypt_aes_gcm import encrypt_file_aes_gcm, decrypt_file_aes_gcm
 from enc_dec_script.encrypt_chacha20 import encrypt_file_chacha20, decrypt_file_chacha20
 from enc_dec_script.encrypt_chacha20_poly1305 import encrypt_file_chacha20_poly1305, decrypt_file_chacha20_poly1305
@@ -115,9 +117,9 @@ def encrypt_file():
         elif algorithm == 'aes-gcm':
             result = encrypt_file_aes_gcm(f)
         elif algorithm == 'aes-256-cbc':
-            result = encrypt_file_aes_cbc(f, key_size=32)
+            result = encrypt_file_aes_cbc_256(f, key_size=32)
         elif algorithm == 'aes-256-gcm':
-            result = encrypt_file_aes_gcm(f, key_size=32)
+            result = encrypt_file_aes_gcm_256(f)
         elif algorithm == 'chacha20':
             result = encrypt_file_chacha20(f)
         elif algorithm == 'chacha20-poly1305':
@@ -167,21 +169,35 @@ def decrypt_file():
     file.save(encrypted_path)
     
     try:
-        # Process based on algorithm
-        if algorithm in ['aes-cbc', 'aes-256-cbc']:
+        if algorithm == 'aes-cbc':
             key = request.form.get('key')
             iv = request.form.get('iv')
             if not key or not iv:
                 return jsonify({"error": "Key and IV are required for AES-CBC decryption"}), 400
             decrypted_path = decrypt_file_aes_cbc(encrypted_path, key, iv)
             
-        elif algorithm in ['aes-gcm', 'aes-256-gcm']:
+        elif algorithm == 'aes-256-cbc':
+            key = request.form.get('key')
+            iv = request.form.get('iv')
+            if not key or not iv:
+                return jsonify({"error": "Key and IV are required for AES-256-CBC decryption"}), 400
+            decrypted_path = decrypt_file_aes_cbc_256(encrypted_path, key, iv)  # Use AES-256-CBC specific function
+            
+        elif algorithm == 'aes-gcm':
             key = request.form.get('key')
             nonce = request.form.get('nonce')
             tag = request.form.get('tag')
             if not key or not nonce or not tag:
                 return jsonify({"error": "Key, nonce, and tag are required for AES-GCM decryption"}), 400
             decrypted_path = decrypt_file_aes_gcm(encrypted_path, key, nonce, tag)
+            
+        elif algorithm == 'aes-256-gcm':
+            key = request.form.get('key')
+            nonce = request.form.get('nonce')
+            tag = request.form.get('tag')
+            if not key or not nonce or not tag:
+                return jsonify({"error": "Key, nonce, and tag are required for AES-256-GCM decryption"}), 400
+            decrypted_path = decrypt_file_aes_gcm_256(encrypted_path, key, nonce, tag)  # Use AES-256-GCM specific function
             
         elif algorithm == 'chacha20':
             key = request.form.get('key')
@@ -197,7 +213,6 @@ def decrypt_file():
                 return jsonify({"error": "Key and nonce are required for ChaCha20-Poly1305 decryption"}), 400
             decrypted_path = decrypt_file_chacha20_poly1305(encrypted_path, key, nonce)
 
-        # If we get here, decryption was successful
         return send_file(
             decrypted_path,
             as_attachment=True,
@@ -206,7 +221,6 @@ def decrypt_file():
         )
     except Exception as e:
         return jsonify({"error": f"Decryption failed: {str(e)}"}), 400
-
 # Function to read benchmark results from file
 def read_benchmark_results(algorithm, file_size):
     """Read benchmark results from the corresponding file"""

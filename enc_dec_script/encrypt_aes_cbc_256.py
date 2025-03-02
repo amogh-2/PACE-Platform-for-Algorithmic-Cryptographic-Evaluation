@@ -3,7 +3,7 @@ from cryptography.hazmat.backends import default_backend
 import os
 import base64
 
-def encrypt_file_aes_cbc(file):
+def encrypt_file_aes_cbc_256(file):
     try:
         key = os.urandom(32)  # AES_cbc-128 key (32 bytes)
         iv = os.urandom(16) # IV (16 bytes)
@@ -25,7 +25,7 @@ def encrypt_file_aes_cbc(file):
     except Exception as e:
         return {"error": f"Encryption failed: {str(e)}"}
     
-def decrypt_file_aes_cbc(filepath, key_b64, iv_b64):
+def decrypt_file_aes_cbc_256(filepath, key_b64, iv_b64):
     try:
         key = base64.b64decode(key_b64)
         iv = base64.b64decode(iv_b64)

@@ -3,7 +3,7 @@ from cryptography.hazmat.backends import default_backend
 import os
 import base64
 
-def encrypt_file_aes_gcm(file):
+def encrypt_file_aes_gcm_256(file):
     try:
         key = os.urandom(32)  # AES-256 key (32 bytes)
         nonce = os.urandom(12)  # 96-bit nonce for GCM
@@ -24,7 +24,7 @@ def encrypt_file_aes_gcm(file):
         return {"error": f"Encryption failed: {str(e)}"}
     
 
-def decrypt_file_aes_gcm(filepath, key_b64, nonce_b64, tag_b64):
+def decrypt_file_aes_gcm_256(filepath, key_b64, nonce_b64, tag_b64):
     try:
         key = base64.b64decode(key_b64)
         nonce = base64.b64decode(nonce_b64)
