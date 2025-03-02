@@ -3,9 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Benchmarking Based on Strength</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <p1>strength benchmarking</p1>
+<body class="font-sans bg-gray-900 text-gray-100">
+    <div class="max-w-6xl mx-auto px-10 sm:px-8 py-10">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-white mb-4">Benchmarking Based on Strength</h1>
+        </header>
+
+        <section>
+            <div class="overflow-x-auto ">
+                <table class="w-full border border-gray-700 text-left text-gray-300">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-3 border border-gray-700">S.No</th>
+                            <th class="p-3 border border-gray-700">Performance Parameter</th>
+                            <th class="p-3 border border-gray-700">AES-CBC 128</th>
+                            <th class="p-3 border border-gray-700">AES-CBC 256</th>
+                            <th class="p-3 border border-gray-700">AES-GCM 128</th>
+                            <th class="p-3 border border-gray-700">AES-GCM 256</th>
+                            <th class="p-3 border border-gray-700">ChaCha20</th>
+                            <th class="p-3 border border-gray-700">ChaCha-Poly</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-800">
+                            <td class="p-3 border border-gray-700">1</td>
+                            <td class="p-3 border border-gray-700">Avalanche Effect (%)</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.00</td>
+                        </tr>
+                        <tr class="bg-gray-800">
+                            <td class="p-3 border border-gray-700">2</td>
+                            <td class="p-3 border border-gray-700">Ciphertext Entropy</td>
+                            <td class="p-3 border border-gray-700">7.9999817</td>
+                            <td class="p-3 border border-gray-700">7.9999828</td>
+                            <td class="p-3 border border-gray-700">7.9999425</td>
+                            <td class="p-3 border border-gray-700">7.9999564</td>
+                            <td class="p-3 border border-gray-700">7.9999569</td>
+                            <td class="p-3 border border-gray-700">7.9999856</td>
+                        </tr>
+                        <tr class="bg-gray-800">
+                            <td class="p-3 border border-gray-700">3</td>
+                            <td class="p-3 border border-gray-700">Correlation Coefficient</td>
+                            <td class="p-3 border border-gray-700">0.000120</td>
+                            <td class="p-3 border border-gray-700">0.000446</td>
+                            <td class="p-3 border border-gray-700">0.000195</td>
+                            <td class="p-3 border border-gray-700">0.000290</td>
+                            <td class="p-3 border border-gray-700">0.000132</td>
+                            <td class="p-3 border border-gray-700">0.000242</td>
+                        </tr>
+                        <tr class="bg-gray-800">
+                            <td class="p-3 border border-gray-700">4</td>
+                            <td class="p-3 border border-gray-700">Key Size</td>
+                            <td class="p-3 border border-gray-700">128</td>
+                            <td class="p-3 border border-gray-700">256</td>
+                            <td class="p-3 border border-gray-700">128</td>
+                            <td class="p-3 border border-gray-700">256</td>
+                            <td class="p-3 border border-gray-700">256</td>
+                            <td class="p-3 border border-gray-700">256</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
 </body>
 </html>

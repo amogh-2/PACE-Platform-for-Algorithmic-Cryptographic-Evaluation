@@ -1,99 +1,96 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const runButton = document.querySelector(".run-button")
-  const resultsTable = document.querySelector("table tbody")
-  const fileSize = document.getElementById("file-size")
+  console.log("DOM fully loaded and parsed - AES-256-CBC");
+
+  const runButton = document.querySelector(".run-button");
+  const resultsTable = document.querySelector("table tbody");
+  const fileSize = document.getElementById("fileSize");
+
+  // Check if elements are found
+  console.log("runButton:", runButton);
+  console.log("resultsTable:", resultsTable);
+  console.log("fileSize:", fileSize);
+
+  if (!runButton) console.error("Run button not found!");
+  if (!resultsTable) console.error("Results table not found!");
+  if (!fileSize) console.error("File size selector not found!");
 
   // Load existing benchmark results when the page loads
-  loadExistingResults()
+  loadExistingResults();
 
-  runButton.addEventListener("click", async () => {
-    // Disable button during benchmark
-    runButton.disabled = true
-    runButton.textContent = "Running Benchmark..."
+  if (runButton) {
+      runButton.addEventListener("click", async () => {
+          console.log("Run Benchmark clicked - AES-256-CBC");
+          runButton.disabled = true;
+          runButton.textContent = "Running Benchmark...";
 
-    try {
-      // Get selected file size
-      const selectedSize = fileSize.value
+          try {
+              const selectedSize = fileSize.value;
+              console.log("Selected file size:", selectedSize);
 
-      // Call the benchmark endpoint
-      const response = await fetch("/run_benchmark", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-256-CBC" }),
-      })
+              const response = await fetch("/run_benchmark", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ fileSize: selectedSize, algorithm: "AES-256-CBC" }),
+              });
 
-      if (!response.ok) {
-        throw new Error("Benchmark failed")
-      }
+              console.log("Fetch response status:", response.status);
+              if (!response.ok) {
+                  const errorText = await response.text();
+                  throw new Error(`Benchmark failed: ${errorText}`);
+              }
 
-      const result = await response.json()
+              const result = await response.json();
+              console.log("Benchmark result:", result);
 
-      // Add the new result to the table
-      addResultRow(result)
-
-      // Re-enable the button
-      runButton.textContent = "Run Benchmark"
-      runButton.disabled = false
-    } catch (error) {
-      console.error("Error running benchmark:", error)
-      runButton.textContent = "Run Benchmark"
-      runButton.disabled = false
-      alert("Error running benchmark. Please try again.")
-    }
-  })
+              addResultRow(result);
+              runButton.textContent = "Run Benchmark";
+              runButton.disabled = false;
+          } catch (error) {
+              console.error("Error running benchmark:", error);
+              runButton.textContent = "Run Benchmark";
+              runButton.disabled = false;
+              alert("Error running benchmark: " + error.message);
+          }
+      });
+  }
 
   async function loadExistingResults() {
-    try {
-      // Get selected file size
-      const selectedSize = fileSize.value
+      try {
+          const selectedSize = fileSize.value;
+          const response = await fetch(`/get_benchmark_results?algorithm=AES-256-CBC&fileSize=${selectedSize}`);
 
-      // Call the API to get existing results
-      const response = await fetch(`/get_benchmark_results?algorithm=AES-256-CBC&fileSize=${selectedSize}`)
+          console.log("Get results response status:", response.status);
+          if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Failed to load results: ${errorText}`);
+          }
 
-      if (!response.ok) {
-        throw new Error("Failed to load benchmark results")
+          const results = await response.json();
+          console.log("Loaded results:", results);
+
+          resultsTable.innerHTML = "";
+          results.forEach((result) => addResultRow(result));
+      } catch (error) {
+          console.error("Error loading benchmark results:", error);
       }
-
-      const results = await response.json()
-
-      // Clear existing table rows
-      resultsTable.innerHTML = ""
-
-      // Add each result to the table
-      results.forEach((result) => {
-        addResultRow(result)
-      })
-    } catch (error) {
-      console.error("Error loading benchmark results:", error)
-    }
   }
 
-  // Listen for changes to the file size dropdown
-  fileSize.addEventListener("change", loadExistingResults)
+  if (fileSize) {
+      fileSize.addEventListener("change", () => {
+          console.log("File size changed to:", fileSize.value);
+          loadExistingResults();
+      });
+  }
 
   function addResultRow(result) {
-    const newRow = resultsTable.insertRow()
-
-    // Add cells with result data
-    const cpuCell = newRow.insertCell()
-    cpuCell.textContent = result.cpu_model
-
-    const osCell = newRow.insertCell()
-    osCell.textContent = result.os_name
-
-    const fileSizeCell = newRow.insertCell()
-    fileSizeCell.textContent = result.file_size
-
-    const encTimeCell = newRow.insertCell()
-    encTimeCell.textContent = result.encryption_time + "s"
-
-    const decTimeCell = newRow.insertCell()
-    decTimeCell.textContent = result.decryption_time + "s"
-
-    const execTimeCell = newRow.insertCell()
-    execTimeCell.textContent = result.execution_time + "s"
+      const newRow = resultsTable.insertRow();
+      newRow.insertCell().textContent = result.cpu_model;
+      newRow.insertCell().textContent = result.os_name;
+      newRow.insertCell().textContent = result.file_size;
+      newRow.insertCell().textContent = result.encryption_time + "s";
+      newRow.insertCell().textContent = result.decryption_time + "s";
+      newRow.insertCell().textContent = result.execution_time + "s";
   }
-})
-
+});

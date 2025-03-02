@@ -3,86 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AES-256 GCM Benchmark</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .benchmark-section {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-        .benchmark-section h3 {
-            margin-top: 0;
-        }
-        .run-button {
-            margin-top: 10px;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .run-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>AES-256 CBC Benchmark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>AES-256 GCM Encryption</h2>
-    <p>
-        AES (Advanced Encryption Standard) with a 256-bit key in Galois/Counter Mode (GCM) is a highly secure symmetric encryption algorithm. 
-        GCM provides both confidentiality and authenticity, making it suitable for secure communication and data storage.
-    </p>
+<body class="font-sans bg-gray-900 text-gray-100">
+    <div class="max-w-5xl mx-auto px-6 sm:px-8 py-10">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-white mb-4">AES-256 CBC Encryption</h1>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                AES (Advanced Encryption Standard) in Cipher Block Chaining (CBC) mode with a 256-bit key encrypts data in fixed-size blocks. Each block is XORed with the previous one for enhanced security.
+            </p>
+        </header>
 
-    <div class="benchmark-section">
-        <h3>Help Us Benchmark AES-256 GCM</h3>
-        <p>
-            Select a file size and click "Run Benchmark" to contribute to performance testing of AES-256 GCM encryption and decryption.
-        </p>
-        <label for="file-size">Choose a file size:</label>
-        <select id="file-size">
-            <option value="5MB">5MB</option>
-            <option value="10MB">10MB</option>
-            <option value="20MB">20MB</option>
-        </select>
-        <button class="run-button">Run Benchmark</button>
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md mb-10">
+            <h2 class="text-2xl font-semibold text-white mb-4">Help Us Benchmark AES-256 CBC</h2>
+            <p class="text-gray-300 mb-4">Select a file size and click "Run Benchmark" to contribute to performance testing of AES-256 CBC encryption and decryption.</p>
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <label for="fileSize" class="text-gray-300 text-lg">Choose a file size:</label>
+                <select id="fileSize" class="p-2 rounded-lg bg-gray-700 text-white w-full sm:w-1/5">
+                    <option value="5MB">5MB</option>
+                    <option value="10MB">10MB</option>
+                    <option value="20MB">20MB</option>
+                </select>
+                <button class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded-lg text-white font-semibold w-full sm:w-auto run-button">Run Benchmark</button>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-semibold text-white mb-4">Benchmarking Results</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full border border-gray-700 text-left text-gray-300">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-3 border border-gray-700">CPU Model</th>
+                            <th class="p-3 border border-gray-700">OS Name</th>
+                            <th class="p-3 border border-gray-700">File Size</th>
+                            <th class="p-3 border border-gray-700">Encryption Time</th>
+                            <th class="p-3 border border-gray-700">Decryption Time</th>
+                            <th class="p-3 border border-gray-700">Execution Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Results will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 
-    <h3>Benchmarking Results</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>CPU Model</th>
-                <th>OS Name</th>
-                <th>File Size</th>
-                <th>Encryption Time</th>
-                <th>Decryption Time</th>
-                <th>Execution Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Results will be dynamically inserted here -->
-        </tbody>
-    </table>
+    <footer class="bg-gray-950 text-center py-5 text-gray-400 mt-10">
+        <p>© 2025 Universal Framework | All rights reserved.</p>
+    </footer>
 
-    <script src="static/processr_particular_js/aes_256_cbc.js"></script>
+    <!-- External JavaScript Link -->
+    <script src="static/processr_particular_js/aes_cbc_256.js" defer></script>
 </body>
 </html>
-

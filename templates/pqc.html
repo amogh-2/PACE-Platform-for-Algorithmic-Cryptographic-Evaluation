@@ -1,11 +1,158 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Post-Quantum Cryptography - PACE Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for buttons and inputs */
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+        .file-input-wrapper .file-button {
+            display: inline-block;
+            background: #60a5fa; /* bg-blue-400 */
+            color: #000000; /* Black text */
+            padding: 0.75rem 1rem; /* p-3 */
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #3b82f6; /* border-blue-500 */
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 0.75rem; /* mb-3 */
+            font-weight: 600; /* font-semibold */
+        }
+    </style>
 </head>
-<body>
-    <h1>PQC</h1>
+<body class="font-sans bg-gray-900 text-white min-h-screen">
+    <!-- PACE Header -->
+    <div class="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-900 to-gray-600 p-4 flex items-center shadow-lg z-50">
+        <img src="https://img.icons8.com/ios-filled/150/ffffff/lock.png" alt="PACE Logo" 
+             class="w-8 h-8 mr-2 drop-shadow-md hover:scale-110 transition-transform duration-300">
+        <span class="text-xl font-bold text-white">PACE</span>
+    </div>
+
+    <!-- PQC Theory Section -->
+    <div class="max-w-5xl mx-auto mt-24 mb-6 px-6">
+        <h1 class="text-3xl font-bold text-center text-blue-500 mb-4">Post-Quantum Cryptography</h1>
+        <p class="text-lg leading-relaxed text-gray-400">
+            <strong class="text-gray-300">Post-Quantum Cryptography (PQC)</strong> refers to cryptographic algorithms designed to resist attacks from quantum computers, which threaten traditional systems like RSA and ECC. Unlike classical computers, quantum computers leverage quantum mechanics (e.g., superposition and entanglement) to solve certain problems—like factoring large numbers or computing discrete logarithms—exponentially faster, potentially breaking current public-key cryptography in minutes. PQC aims to secure data against this future threat, relying on mathematical problems (e.g., lattice-based or hash-based) believed to be hard for both classical and quantum machines.
+        </p>
+    </div>
+
+    <!-- Quantum Computing Revolution Section -->
+    <div class="max-w-5xl mx-auto mb-6 px-6">
+        <h2 class="text-2xl font-semibold text-blue-500 mb-4 text-center">Quantum Computing’s Cryptographic Revolution</h2>
+        <p class="text-lg leading-relaxed text-gray-400">
+            The introduction of quantum computing promises to revolutionize cryptography by rendering many current encryption methods obsolete. Algorithms like Shor’s can factorize RSA keys and break ECC in polynomial time, exposing sensitive data (e.g., financial transactions, government secrets). This shift necessitates a global transition to PQC, with organizations racing to adopt quantum-resistant standards before practical quantum computers emerge—estimated within 10-20 years. Meanwhile, “harvest now, decrypt later” attacks highlight the urgency, as adversaries collect encrypted data today for future decryption.
+        </p>
+    </div>
+
+    <!-- Key Encapsulation Mechanism Section -->
+    <div class="max-w-5xl mx-auto mb-6 px-6">
+        <h2 class="text-2xl font-semibold text-blue-500 mb-4 text-center">What is a Key Encapsulation Mechanism (KEM)?</h2>
+        <p class="text-lg leading-relaxed text-gray-400">
+            A <strong>Key Encapsulation Mechanism (KEM)</strong> is an asymmetric cryptographic technique used to securely share a symmetric key between two parties. Unlike direct encryption of large data, a KEM generates a symmetric key, encrypts it with a public key, and sends it (encapsulated) to the recipient, who decapsulates it with their private key. This key is then used with a symmetric algorithm (e.g., AES) for efficient data encryption. KEMs are vital in PQC because they provide quantum-resistant key exchange, replacing vulnerable methods like Diffie-Hellman.
+        </p>
+    </div>
+
+    <!-- NIST PQC Algorithms Section -->
+    <div class="container max-w-3xl mx-auto bg-gray-100 p-8 rounded-lg shadow-lg mb-6">
+        <h2 class="text-2xl font-extrabold text-gray-700 mb-4 text-center">NIST-Selected PQC Algorithms</h2>
+        <p class="text-lg text-gray-600 mb-4">
+            The National Institute of Standards and Technology (NIST) finalized its first PQC standards in August 2024 after a multi-year competition. These include:
+        </p>
+        <ul class="list-disc list-inside text-gray-600">
+            <li><strong>ML-KEM (Kyber)</strong>: A lattice-based KEM for general encryption, offering fast key exchange with small key sizes.</li>
+            <li><strong>ML-DSA (Dilithium)</strong>: A lattice-based digital signature scheme for secure authentication.</li>
+            <li><strong>FN-DSA (FALCON)</strong>: Another lattice-based signature algorithm, using fast-Fourier transform techniques (draft pending).</li>
+            <li><strong>SLH-DSA (SPHINCS+)</strong>: A hash-based signature scheme, serving as a stateless backup.</li>
+        </ul>
+    </div>
+
+    <!-- Kyber Focus and Benchmarking Section -->
+    <div class="container max-w-3xl mx-auto bg-gray-100 p-8 rounded-lg shadow-lg mb-6">
+        <h2 class="text-2xl font-extrabold text-gray-700 mb-4 text-center">Focus on Kyber (ML-KEM)</h2>
+        <p class="text-lg text-gray-600 mb-4">
+            Kyber, now standardized as ML-KEM, is a lattice-based KEM selected by NIST for its efficiency and security. Based on the Module Learning With Errors (M-LWE) problem, Kyber offers three variants: Kyber-512 (Level 1, ~AES-128), Kyber-768 (Level 3, ~AES-192), and Kyber-1024 (Level 5, ~AES-256). We’re benchmarking Kyber-512 and Kyber-1024 to evaluate:
+        </p>
+        <ul class="list-disc list-inside text-gray-600 mb-4">
+            <li><strong>Key Generation Time</strong>: Time to generate public/private key pairs.</li>
+            <li><strong>Memory Consumption</strong>: RAM usage during key generation.</li>
+        </ul>
+        <div class="file-input-wrapper">
+            <input type="file" id="kyberBenchmarkFile">
+            <label for="kyberBenchmarkFile" class="file-button">Select Benchmark File</label>
+        </div>
+        <button id="runBenchmarkButton" class="w-full p-3 bg-green-400 text-black rounded-lg hover:bg-green-500 transition-colors font-semibold">Run Benchmark</button>
+        <div id="benchmark-results" class="mt-4 p-3 bg-blue-100 border-l-4 border-blue-600 text-gray-800 font-medium hidden">
+            <p id="kyber512Result"><strong>Kyber-512:</strong> Key Gen Time: TBD ms, Memory: TBD MB</p>
+            <p id="kyber1024Result"><strong>Kyber-1024:</strong> Key Gen Time: TBD ms, Memory: TBD MB</p>
+        </div>
+    </div>
+
+    <!-- Additional Benchmark Ideas Section -->
+    <div class="container max-w-3xl mx-auto bg-gray-100 p-8 rounded-lg shadow-lg mb-6">
+        <h2 class="text-2xl font-extrabold text-gray-700 mb-4 text-center">Additional Kyber Benchmarks</h2>
+        <p class="text-lg text-gray-600">
+            Beyond key generation, we could benchmark:
+        </p>
+        <ul class="list-disc list-inside text-gray-600">
+            <li><strong>Encapsulation Time</strong>: Speed of encrypting the symmetric key.</li>
+            <li><strong>Decapsulation Time</strong>: Speed of decrypting the symmetric key.</li>
+            <li><strong>Ciphertext Size</strong>: Size of the encapsulated key data.</li>
+            <li><strong>CPU Usage</strong>: Processor load during operations.</li>
+            <li><strong>Energy Consumption</strong>: Power usage, critical for mobile devices.</li>
+        </ul>
+    </div>
+
+
+    <!-- JavaScript with Error Handling and Mock Benchmark -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const runButton = document.getElementById('runBenchmarkButton');
+            const resultsDiv = document.getElementById('benchmark-results');
+            const kyber512Result = document.getElementById('kyber512Result');
+            const kyber1024Result = document.getElementById('kyber1024Result');
+            const fileInput = document.getElementById('kyberBenchmarkFile');
+
+            if (!runButton || !resultsDiv || !kyber512Result || !kyber1024Result || !fileInput) {
+                console.error('One or more DOM elements not found.');
+                return;
+            }
+
+            runButton.addEventListener('click', () => {
+                try {
+                    // Check if a file is selected
+                    if (!fileInput.files.length) {
+                        alert('Please select a benchmark file first.');
+                        return;
+                    }
+
+                    // Mock benchmark simulation (replace with real implementation later)
+                    resultsDiv.classList.remove('hidden');
+                    runButton.disabled = true; // Prevent multiple clicks
+                    runButton.textContent = 'Running...';
+
+                    setTimeout(() => {
+                        // Mock results (approximations based on typical Kyber performance)
+                        kyber512Result.textContent = '<strong>Kyber-512:</strong> Key Gen Time: 1.2 ms, Memory: 4.1 MB';
+                        kyber1024Result.textContent = '<strong>Kyber-1024:</strong> Key Gen Time: 2.8 ms, Memory: 6.3 MB';
+                        runButton.disabled = false;
+                        runButton.textContent = 'Run Benchmark';
+                        console.log('Benchmark completed for Kyber-512 and Kyber-1024.');
+                    }, 1500); // Simulate a 1.5-second delay
+                } catch (error) {
+                    console.error('Error during benchmark:', error);
+                    resultsDiv.classList.add('hidden');
+                    alert('An error occurred while running the benchmark.');
+                    runButton.disabled = false;
+                    runButton.textContent = 'Run Benchmark';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

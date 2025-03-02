@@ -1,84 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AES_CBC-128 File Encryption & Decryption</title>
+    <title>AES_CBC-256 File Encryption & Decryption</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Hide the default file input completely */
-        .file-input-wrapper input[type="file"] {
-            display: none;
-        }
-        /* Style the custom button */
-        .file-input-wrapper .file-button {
-            display: inline-block;
-            background: #60a5fa; /* bg-blue-400 */
-            color: #000000; /* Black text */
-            padding: 0.75rem 1rem; /* p-3 */
-            border-radius: 0.5rem; /* rounded-lg */
-            border: 1px solid #3b82f6; /* border-blue-500 */
-            cursor: pointer;
-            text-align: left; /* Align text to the left */
-            width: 100%;
-            margin-bottom: 0.75rem; /* mb-3 */
-            font-weight: 600; /* font-semibold */
-        }
-    </style>
 </head>
-<body class="font-sans bg-blue-50 text-white min-h-screen">
-    <!-- PACE Header -->
-    <div class="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-900 to-gray-600 p-4 flex items-center shadow-lg z-50">
-        <img src="https://img.icons8.com/ios-filled/150/ffffff/lock.png" alt="PACE Logo" 
-             class="w-8 h-8 mr-2 drop-shadow-md hover:scale-110 transition-transform duration-300">
-        <span class="text-xl font-bold text-white">PACE</span>
-    </div>
 
-    <!-- AES-CBC Description -->
-    <div class="max-w-5xl mx-auto mt-24 mb-6 px-6 text-black">
-        <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">AES-CBC (128-bit Key)</h1>
-        <p class="text-lg leading-relaxed">
-            <strong>AES-CBC (Advanced Encryption Standard - Cipher Block Chaining)</strong> is a widely used symmetric encryption algorithm that operates on 128-bit blocks of data. In CBC mode, each plaintext block is XORed with the previous ciphertext block before being encrypted, ensuring that identical plaintext blocks result in different ciphertext. AES-CBC with a 128-bit key provides strong security for various applications like secure communication and data storage. To maintain its security, the initialization vector (IV) must be unique and random for each encryption operation to prevent patterns in the ciphertext.
-        </p>
-    </div>
+<body class="font-sans bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between px-5">
 
-    <!-- Encryption Container -->
-    <div class="container max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-6 text-black">
-        <h2 class="text-2xl font-extrabold text-black mb-4 text-center">Encrypt a File with AES-CBC (128-bit Key)</h2>
-        <div class="file-input-wrapper">
-            <input type="file" id="encryptFileInput">
-            <label for="encryptFileInput" class="file-button">Select File</label>
+    <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-3xl mx-auto mt-16">
+        <header class="mb-6 text-center">
+            <h2 class="text-2xl font-extrabold text-white mb-4">AES-CBC Encryption & Decryption</h2>
+            <p class="text-lg text-gray-300">
+                Use the  encryption algorithm in CBC mode to securely encrypt and decrypt your files.
+            </p>
+        </header>
+
+        <div class="flex flex-col md:flex-row justify-between gap-6">
+            <div class="bg-gray-700 rounded-lg p-6 flex-1">
+                <h3 class="text-xl font-semibold text-white mb-4">Encrypt Your File</h3>
+                <div>
+                    <label for="encryptFile" class="text-gray-400">Select File to Encrypt</label>
+                    <div class="relative w-full mt-2">
+                        <input type="file"  id="encryptFileInput" class="absolute top-0 left-0 opacity-0 w-full h-full" >
+                        <label for="encryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                    </div>
+                </div>
+               
+                <button id="encryptButton" class="bg-green-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-green-500">Encrypt</button>
+                <div id="encryption-details"></div>
+                <p class="mt-4 text-center text-gray-300">Download Encrypted File: <a id="download-link" style="display: none;" download class="text-blue-400" style="display: none;" download>.enc</a></p>
+            </div>
+
+            <div class="bg-gray-700 rounded-lg p-6 flex-1">
+                <h3 class="text-xl font-semibold text-white mb-4">Decrypt Your Encrypted File</h3>
+                <div>
+                    <label for="decryptFile" class="text-gray-400">Select File to Decrypt</label>
+                    <div class="relative w-full mt-2">
+                        <input type="file" id="decryptFileInput" class="absolute top-0 left-0 opacity-0 w-full h-full" >
+                        <label for="decryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="decryptKey" class="text-gray-400">Enter Decryption Key (128-bit)</label>
+                    <input type="text" id="decryptKey" placeholder="Enter Key" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div>
+                <div class="mt-4">
+                    <label for="decryptIV" class="text-gray-400">Enter Initialization Vector (IV)</label>
+                    <input type="text" id="decryptIV" placeholder="Enter IV" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div>
+                <button id="decryptButton" class="bg-red-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-red-500">Decrypt</button>
+                <div id="decryption-details"></div>
+                <p class="mt-4 text-center text-gray-300">Download Decrypted File: <a id="decrypt-download-link" class="text-blue-400" style="display: none;" download >.dec</a></p>
+            </div>
         </div>
-        <button id="encryptButton" class="w-full p-3 bg-green-400 text-black rounded-lg hover:bg-green-500 transition-colors font-semibold">Encrypt</button>
-        <div id="encryption-details" class="mt-4 p-3 bg-blue-100 border-l-4 border-blue-600 text-black font-medium hidden"></div>
-        <a id="download-link" class="mt-3 inline-block w-full p-3 bg-blue-600 text-black text-center rounded-lg hover:bg-blue-700 transition-colors font-semibold hidden" download>Download Encrypted File</a>
     </div>
 
-    <!-- Decryption Container -->
-    <div class="container max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-6 text-black">
-        <h2 class="text-2xl font-extrabold text-black mb-4 text-center">Decrypt a File with AES-CBC (128-bit Key)</h2>
-        <div class="file-input-wrapper">
-            <input type="file" id="decryptFileInput">
-            <label for="decryptFileInput" class="file-button">Select File</label>
-        </div>
-        <input type="text" id="decryptKey" placeholder="Enter Key" 
-               class="w-full p-3 mb-3 bg-blue-100 text-black border border-blue-300 rounded-lg placeholder-gray-500 font-medium">
-        <input type="text" id="decryptIV" placeholder="Enter IV" 
-               class="w-full p-3 mb-3 bg-blue-100 text-black border border-blue-300 rounded-lg placeholder-gray-500 font-medium">
-        <button id="decryptButton" class="w-full p-3 bg-green-400 text-black rounded-lg hover:bg-green-500 transition-colors font-semibold">Decrypt</button>
-        <div id="decryption-details" class="mt-4 p-3 bg-blue-100 border-l-4 border-blue-600 text-black font-medium hidden"></div>
-        <a id="decrypt-download-link" class="mt-3 inline-block w-full p-3 bg-blue-600 text-black text-center rounded-lg hover:bg-blue-700 transition-colors font-semibold hidden" download>Download Decrypted File</a>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-950 text-gray-300 text-center py-4 font-medium">
-        <p>© 2025 PACE Framework | All Rights Reserved.</p>
+    <footer class="bg-gray-800 text-gray-400 py-4 text-center mt-6">
+        <p>&copy; 2025 AES Encryption Framework | All Rights Reserved.</p>
     </footer>
 
-    <!-- Existing JavaScript -->
-    <script src="static/enc_dec_js/aes_cbc_interface.js"></script>
-    <script>
-        (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91a02c310a1153cd',t:'MTc0MDkxMDk0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
-    </script>
+    
+<script src="static/enc_dec_js/aes_cbc_interface.js"></script>
 </body>
+
 </html>
+
+
