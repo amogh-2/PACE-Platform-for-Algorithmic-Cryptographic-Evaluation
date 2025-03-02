@@ -62,10 +62,6 @@ def chacha20_poly1305_pro():
 def chacha20_pro():
     return render_template("/processor_benchmarking/processor_particular/chacha20pro.html", algorithm="ChaCha20")
 
-@app.route("/kyber_aes_pro")
-def kyber_aes_pro():
-    return render_template("/processor_benchmarking/processor_particular/kyber-aes-256-pro.html")
-
 @app.route("/aes_cbc_enc_dec")
 def aes_cbc_enc_dec():
     return render_template("enc_dec_algorithms/aes-cbc-128.html")

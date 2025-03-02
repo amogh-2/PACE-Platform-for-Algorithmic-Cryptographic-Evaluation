@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const key = response.headers.get('Key');
             const nonce = response.headers.get('Nonce');
             const tag = response.headers.get('Tag');
-            encryptionDetails.textContent = `Key: ${key}\nNonce: ${nonce}\nTag: ${tag}`;
+            encryptionDetails.textContent = Key: ${key}\nNonce: ${nonce}\nTag: ${tag};
             return response.blob();
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
             downloadLink.href = url;
-            downloadLink.download = `${file.name}.enc`;
+            downloadLink.download = ${file.name}.enc;
             downloadLink.style.display = 'inline-block';
             downloadLink.textContent = 'Download Encrypted File';
         })

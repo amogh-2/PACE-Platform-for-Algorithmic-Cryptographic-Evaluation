@@ -10,7 +10,7 @@
 
 <body class="font-sans bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between px-5">
 
-    <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-3xl mx-auto mt-16">
+    <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-4xl mx-auto mt-16">
         <header class="mb-6 text-center">
             <h2 class="text-2xl font-extrabold text-white mb-4">Encrypt a File with AES-256-GCM</h2>
             <p class="text-lg text-gray-300">
@@ -24,10 +24,9 @@
                 <div>
                     <label for="encryptFile" class="text-gray-400">Select File to Encrypt</label>
                     <div class="relative w-full mt-2">
-                        <input id="encryptFileInput" type="file" class="absolute top-0 left-0 opacity-0 w-full h-full" id="encryptFile">
-                        <label for="encryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                        <input type="file" id="encryptFileInput">
                     </div>
-                </div> 
+                </div>
                
                 <button id="encryptButton" class="bg-green-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-green-500">Encrypt</button>
                 <div id="encryption-details"></div>
@@ -39,8 +38,7 @@
                 <div>
                     <label for="decryptFile" class="text-gray-400">Select File to Decrypt</label>
                     <div class="relative w-full mt-2">
-                        <input type="file" id="decryptFileInput" class="absolute top-0 left-0 opacity-0 w-full h-full" id="decryptFile">
-                        <label for="decryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                        <input type="file" id="decryptFileInput">
                     </div>
                 </div>
                 <div class="mt-4">
@@ -49,8 +47,17 @@
                 </div>
                 <div class="mt-4">
                     <label for="decryptIV" class="text-gray-400">Enter Nonce</label>
-                    <input type="text" id="decryptIV" placeholder="Enter Nonce" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                    <input type="text" id="decryptNonce" placeholder="Enter Nonce" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
                 </div>
+                <div class="mt-4">
+                    <label for="decryptTag" class="text-gray-400">Enter Tag</label>
+                    <input
+                      type="text"
+                      id="decryptTag"
+                      placeholder="Enter Tag"
+                      class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400"
+                    />
+                  </div>
                 <button id="decryptButton" class="bg-red-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-red-500">Decrypt</button>
                 <div id="decryption-details"></div>
                 <p class="mt-4 text-center text-gray-300">Download Decrypted File: <a class="text-blue-400"id="decrypt-download-link" style="display: none;" download>.dec</a></p>
@@ -58,10 +65,9 @@
         </div>
     </div>
 
-    <footer class="bg-gray-800 text-gray-400 py-4 text-center mt-6">
-        <p>&copy; 2025 AES Encryption Framework | All Rights Reserved.</p>
-    </footer>
-    <script src="static/enc_dec_js/aes_gcm_256_interface.js"></script>
+    
+
+<script src="static/enc_dec_js/aes_gcm_256_interface.js"></script>
 </body>
 
 </html>
