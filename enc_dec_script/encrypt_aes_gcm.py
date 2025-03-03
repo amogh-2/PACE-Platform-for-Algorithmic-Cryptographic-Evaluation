@@ -5,8 +5,8 @@ import base64
 
 def encrypt_file_aes_gcm(file):
     try:
-        key = os.urandom(16)  # AES-128 key (16 bytes)
-        nonce = os.urandom(12)  # 96-bit nonce for GCM
+        key = os.urandom(16) 
+        nonce = os.urandom(12)  
 
         cipher = Cipher(algorithms.AES(key), modes.GCM(nonce), backend=default_backend())
         encryptor = cipher.encryptor()

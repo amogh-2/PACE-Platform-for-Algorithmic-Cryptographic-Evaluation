@@ -26,12 +26,11 @@ DECRYPTED_FOLDER = "/home/amogh/Downloads/temp/try_api/decrypted"
 ENCRYPTION_INFO_FOLDER = "/home/amogh/Downloads/temp/try_api/encryption_info"
 BENCHMARK_RESULTS_FOLDER = "/home/amogh/Downloads/temp/try_api/benchmark_results"
 
-# Create necessary folders
+
 for folder in [UPLOAD_FOLDER, ENCRYPTED_FOLDER, DECRYPTED_FOLDER, ENCRYPTION_INFO_FOLDER, BENCHMARK_RESULTS_FOLDER]:
     os.makedirs(folder, exist_ok=True)
 
-# Path to store benchmark results
-#AES_CBC_RESULTS_FILE = os.path.join(BENCHMARK_RESULTS_FOLDER, "aes_cbc_benchmark_results.json")
+
 
 @app.route("/")
 def index():
@@ -106,11 +105,11 @@ def encrypt_file():
     if algorithm not in ['aes-cbc', 'aes-gcm', 'aes-256-cbc', 'aes-256-gcm', 'chacha20', 'chacha20-poly1305']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
-    # Save original file to uploads/
+   
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
     
-    # Encrypt the file
+   
     with open(file_path, "rb") as f:
         if algorithm == 'aes-cbc':
             result = encrypt_file_aes_cbc(f)
@@ -128,12 +127,11 @@ def encrypt_file():
     if "error" in result:
         return jsonify(result), 500
 
-    # Save encrypted file to encrypted/
+   
     encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename + ".enc")
     with open(encrypted_path, "wb") as f:
         f.write(base64.b64decode(result["encrypted_data"]))
 
-    # Create response with encrypted file
     response = send_file(
         encrypted_path,
         as_attachment=True,
@@ -141,7 +139,7 @@ def encrypt_file():
         mimetype="application/octet-stream"
     )
     
-    # Add encryption parameters to response headers
+    
     if "key" in result:
         response.headers["Key"] = result["key"]
     if "iv" in result:
@@ -164,7 +162,7 @@ def decrypt_file():
     if algorithm not in ['aes-cbc', 'aes-gcm', 'aes-256-cbc', 'aes-256-gcm', 'chacha20', 'chacha20-poly1305']:
         return jsonify({"error": "Unsupported algorithm"}), 400
 
-    # Save encrypted file to encrypted/
+   
     encrypted_path = os.path.join(ENCRYPTED_FOLDER, file.filename)
     file.save(encrypted_path)
     
@@ -221,19 +219,19 @@ def decrypt_file():
         )
     except Exception as e:
         return jsonify({"error": f"Decryption failed: {str(e)}"}), 400
-# Function to read benchmark results from file
+
 def read_benchmark_results(algorithm, file_size):
     """Read benchmark results from the corresponding file"""
     try:
-        # Determine the file path based on algorithm and file size
+       
         filename = f"{algorithm.lower().replace('-', '_')}_{file_size}.txt"
         filepath = os.path.join(BENCHMARK_RESULTS_FOLDER, filename)
         
-        # Check if file exists
+        
         if not os.path.exists(filepath):
             return []
         
-        # Read the file and parse results
+        
         results = []
         with open(filepath, 'r') as f:
             for line in f:
@@ -254,7 +252,7 @@ def read_benchmark_results(algorithm, file_size):
         print(f"Error reading benchmark results: {str(e)}")
         return []
 
-# Processor benchmarking routes and functions
+
 ALGORITHMS = {
     "AES-CBC": {
         "benchmark_function": run_cbc_benchmark,
@@ -292,7 +290,7 @@ def get_benchmark_results():
         if algorithm not in ALGORITHMS:
             return jsonify({"error": f"Unsupported algorithm: {algorithm}"}), 400
         
-        # Read results from file
+        
         results = read_benchmark_results(algorithm, file_size)
         
         return jsonify(results)
@@ -309,7 +307,7 @@ def run_algorithm_benchmark():
         if algorithm not in ALGORITHMS:
             return jsonify({"error": f"Unsupported algorithm: {algorithm}"}), 400
         
-        # Run the benchmark for the specified algorithm
+       
         result = ALGORITHMS[algorithm]["benchmark_function"](file_size, BENCHMARK_RESULTS_FOLDER)
         
         if "error" in result:
@@ -319,7 +317,7 @@ def run_algorithm_benchmark():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Modify the existing route functions to include benchmarking
+
 @app.route("/aes_cbc_128_pro")
 def aes_cbc_128_pro():
     return render_template("/processor_benchmarking/processor_particular/aes-cbc-128-pro.html", algorithm="AES-CBC")

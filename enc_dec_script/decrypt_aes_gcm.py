@@ -4,17 +4,17 @@ import os
 
 def decrypt_file_aes_gcm(filepath, key_b64, nonce_b64, tag_b64):
     try:
-        # Validate key and nonce
+        
         try:
             key = base64.b64decode(key_b64)
             nonce = base64.b64decode(nonce_b64)
             tag = base64.b64decode(tag_b64) if tag_b64 else None
             
-            # Validate key length (must be 16, 24, or 32 bytes for AES)
+            
             if len(key) not in [16, 24, 32]:
                 raise ValueError(f"Invalid key length: {len(key)} bytes. Must be 16, 24, or 32 bytes.")
             
-            # Validate nonce length (typically 12 bytes for AES-GCM)
+            
             if len(nonce) != 12:
                 raise ValueError(f"Invalid nonce length: {len(nonce)} bytes. Must be 12 bytes.")
         except Exception as e:
@@ -23,21 +23,20 @@ def decrypt_file_aes_gcm(filepath, key_b64, nonce_b64, tag_b64):
         with open(filepath, 'rb') as file:
             encrypted_data = file.read()
         
-        # For AES-GCM, the tag might be appended to the ciphertext
+        
         if tag:
-            # If tag is provided separately
+            
             ciphertext = encrypted_data
         else:
-            # If tag is the last 16 bytes of the ciphertext
+       
             ciphertext = encrypted_data[:-16]
             tag = encrypted_data[-16:]
 
-        # Create AESGCM object
+       
         aesgcm = AESGCM(key)
         
         try:
-            # Decrypt the data
-            # For AES-GCM, the tag is verified during decryption
+          
             decrypted_data = aesgcm.decrypt(nonce, ciphertext + (tag if tag else b''), None)
         except Exception as e:
             raise ValueError(f"Decryption failed, possibly due to incorrect key, nonce, or tag: {str(e)}")

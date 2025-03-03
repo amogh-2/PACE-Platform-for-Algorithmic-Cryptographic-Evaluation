@@ -8,12 +8,40 @@
 </head>
 <body class="font-sans bg-gray-900 text-gray-100">
     <div class="max-w-6xl mx-auto px-10 sm:px-8 py-10">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl font-extrabold text-white mb-4">Benchmarking Based on Strength</h1>
+        <header class="fixed top-0 left-0 w-full z-50 bg-gray-900">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <img src="https://img.icons8.com/ios-filled/150/ffffff/lock.png" alt="PACE Logo" 
+                         class="w-8 h-8 md:w-10 md:h-10 logo-modern">
+                    <span class="text-2xl font-semibold text-white">PACE</span>
+                </div>
+                <nav class="flex items-center space-x-6">
+                 
+                </nav>
+            </div>
         </header>
+        <h1 class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-white mb-4 text-center">Benchmarking Based on Strength</h1>
+        </h1>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-white mb-4">Strength Parameters</h2>
+            <p class="text-gray-300 mb-4">
+                This Page benchmarks the strength of various symmetric encryption algorithms, including AES (Advanced Encryption Standard) and ChaCha variants. The performance parameters evaluated here are critical in assessing cryptographic strength:
+            </p>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li><strong>Avalanche Effect:</strong> Measures how much the ciphertext changes when a single bit in the plaintext or key is altered. A higher percentage (ideally 50%) indicates better diffusion and resistance to differential attacks.</li>
+                <li><strong>Ciphertext Entropy:</strong> Quantifies the randomness of the encrypted output. Values close to 8 bits per byte (maximum entropy for 8-bit data) suggest the ciphertext is highly unpredictable and secure against statistical analysis.</li>
+                <li><strong>Correlation Coefficient:</strong> Indicates the relationship between plaintext and ciphertext. A value near 0 implies minimal correlation, enhancing security by making it harder to deduce the plaintext from the ciphertext.</li>
+                <li><strong>Key Size:</strong> Represents the length of the encryption key in bits. Larger keys (e.g., 256 bits) generally provide greater security against brute-force attacks due to the increased keyspace.</li>
+            </ul>
+            <p class="text-gray-300">
+                The algorithms compared include AES in CBC (Cipher Block Chaining) and GCM (Galois/Counter Mode) modes with 128-bit and 256-bit keys, as well as ChaCha20 and ChaCha-Poly (with Poly1305 authentication). These are widely used in modern cryptography, balancing security and performance.
+            </p>
+        </section>
 
         <section>
-            <div class="overflow-x-auto ">
+            <div class="overflow-x-auto">
                 <table class="w-full border border-gray-700 text-left text-gray-300">
                     <thead class="bg-gray-800">
                         <tr>
@@ -31,10 +59,10 @@
                         <tr class="bg-gray-800">
                             <td class="p-3 border border-gray-700">1</td>
                             <td class="p-3 border border-gray-700">Avalanche Effect (%)</td>
+                            <td class="p-3 border border-gray-700">49.98</td>
                             <td class="p-3 border border-gray-700">50.00</td>
-                            <td class="p-3 border border-gray-700">50.00</td>
-                            <td class="p-3 border border-gray-700">50.00</td>
-                            <td class="p-3 border border-gray-700">50.00</td>
+                            <td class="p-3 border border-gray-700">50.01</td>
+                            <td class="p-3 border border-gray-700">50.01</td>
                             <td class="p-3 border border-gray-700">50.00</td>
                             <td class="p-3 border border-gray-700">50.00</td>
                         </tr>
@@ -74,5 +102,6 @@
         </section>
     </div>
 
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91a6a897ab7712ea',t:'MTc0MDk3ODk1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

@@ -4,8 +4,8 @@ import base64
 
 def encrypt_file_chacha20_poly1305(file):
     try:
-        key = os.urandom(32)  # 256-bit key for ChaCha20-Poly1305
-        nonce = os.urandom(12)  # 12-byte nonce
+        key = os.urandom(32)  
+        nonce = os.urandom(12)  
 
         chacha = ChaCha20Poly1305(key)
 

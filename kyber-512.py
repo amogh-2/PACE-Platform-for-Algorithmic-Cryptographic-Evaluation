@@ -42,7 +42,7 @@ def print_stats(operation, times):
 
 def main():
     parser = argparse.ArgumentParser(description="Benchmark Kyber Crystal operations")
-    parser.add_argument("--security", type=int, choices=[1, 2, 3], default=2,
+    parser.add_argument("--security", type=int, choices=[1, 2, 3], default=3,
                         help="Security level (1=Kyber512, 2=Kyber768, 3=Kyber1024)")
     parser.add_argument("--iterations", type=int, default=100,
                         help="Number of iterations for each operation")

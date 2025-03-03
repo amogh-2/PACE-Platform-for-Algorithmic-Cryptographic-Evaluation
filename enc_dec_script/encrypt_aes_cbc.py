@@ -5,14 +5,14 @@ import base64
 
 def encrypt_file_aes_cbc(file):
     try:
-        key = os.urandom(16)  # AES_cbc-128 key (16 bytes)
-        iv = os.urandom(16)   # IV (16 bytes)
+        key = os.urandom(16) 
+        iv = os.urandom(16)  
         
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         encryptor = cipher.encryptor()
 
         file_data = file.read()
-        # Proper PKCS7 padding
+   
         pad_length = 16 - (len(file_data) % 16)
         padded_data = file_data + bytes([pad_length] * pad_length)
         encrypted_data = encryptor.update(padded_data) + encryptor.finalize()

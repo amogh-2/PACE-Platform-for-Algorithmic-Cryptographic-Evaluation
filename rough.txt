@@ -1,32 +1,65 @@
-@app.route("/")
-def home():
-    return render_template("/index.html")
+Kyber 768
+Key Generation Statistics:
+  Mean: 3.55 ms
+  Median: 3.33 ms
+  Std Dev: 0.52 ms
+  Min: 3.05 ms
+  Max: 5.18 ms
 
-@app.route("/aes_enc_dec")
-def aes_enc_dec():
-    return render_template("enc_dec_algorithms/aes-128.html")
+Encapsulation Statistics:
+  Mean: 4.59 ms
+  Median: 4.30 ms
+  Std Dev: 0.68 ms
+  Min: 3.89 ms
+  Max: 6.37 ms
 
-@app.route("/chacha20_enc_dec")
-def chacha20():
-    return render_template("enc_dec_algorithms/chacha20.html")
+Decapsulation Statistics:
+  Mean: 6.23 ms
+  Median: 5.90 ms
+  Std Dev: 0.89 ms
+  Min: 5.35 ms
+  Max: 10.63 ms
 
-@app.route("/ecc_enc_dec")
-def ecc_enc_dec():
-    return render_template("enc_dec_algorithms/ecc.html")
+Kyber 512
+Key Generation Statistics:
+  Mean: 2.44 ms
+  Median: 2.32 ms
+  Std Dev: 0.25 ms
+  Min: 2.26 ms
+  Max: 3.40 ms
 
-@app.route("/rsa_enc_dec")
-def rsa_enc_dec():
-    return render_template("enc_dec_algorithms/rsa.html")
+Encapsulation Statistics:
+  Mean: 3.34 ms
+  Median: 3.27 ms
+  Std Dev: 0.21 ms
+  Min: 3.15 ms
+  Max: 4.21 ms
 
-@app.route("/sha3_enc_dec")
-def sha3_enc_dec():
-    return render_template("enc_dec_algorithms/sha-3.html")
+Decapsulation Statistics:
+  Mean: 4.83 ms
+  Median: 4.70 ms
+  Std Dev: 0.34 ms
+  Min: 4.52 ms
+  Max: 6.15 ms  
 
-@app.route("/sha256_enc_dec")
-def sha256_enc_dec():
-    return render_template("enc_dec_algorithms/sha-256.html")
+Kyber 1024  
+Key Generation Statistics:
+  Mean: 5.42 ms
+  Median: 5.20 ms
+  Std Dev: 0.81 ms
+  Min: 4.58 ms
+  Max: 7.25 ms
 
+Encapsulation Statistics:
+  Mean: 6.62 ms
+  Median: 6.37 ms
+  Std Dev: 1.03 ms
+  Min: 5.57 ms
+  Max: 9.21 ms
 
-
-QPSM2qljPQ0i6QeNrnhSU2==
-cFYWSopRLv4us91jujxJtQ==
+Decapsulation Statistics:
+  Mean: 8.68 ms
+  Median: 8.24 ms
+  Std Dev: 1.26 ms
+  Min: 7.37 ms
+  Max: 11.07 ms
