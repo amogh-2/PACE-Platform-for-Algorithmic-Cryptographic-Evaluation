@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES_CBC-256 File Encryption & Decryption</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between px-5">
+
+    <div class="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-3xl mx-auto mt-16">
+        <header class="mb-6 text-center">
+            <h2 class="text-2xl font-extrabold text-white mb-4">AES-CBC Encryption & Decryption</h2>
+            <p class="text-lg text-gray-300">
+                Use the  encryption algorithm in CBC mode to securely encrypt and decrypt your files.
+            </p>
+        </header>
+
+        <div class="flex flex-col md:flex-row justify-between gap-6">
+            <div class="bg-gray-700 rounded-lg p-6 flex-1">
+                <h3 class="text-xl font-semibold text-white mb-4">Encrypt Your File</h3>
+                <div>
+                    <label for="encryptFile" class="text-gray-400">Select File to Encrypt</label>
+                    <div class="relative w-full mt-2">
+                        <input type="file" class="absolute top-0 left-0 opacity-0 w-full h-full" id="encryptFile">
+                        <label for="encryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                    </div>
+                </div>
+                <!-- <div class="mt-4">
+                    <label for="encryptKey" class="text-gray-400">Enter Encryption Key (128-bit)</label>
+                    <input type="text" id="encryptKey" placeholder="Enter Key" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div> -->
+                <!-- <div class="mt-4">
+                    <label for="encryptIV" class="text-gray-400">Enter Initialization Vector (IV)</label>
+                    <input type="text" id="encryptIV" placeholder="Enter IV" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div> -->
+                <button id="encryptButton" class="bg-green-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-green-500">Encrypt</button>
+                <p class="mt-4 text-center text-gray-300">Download Encrypted File: <a id="download-link" href="#" class="text-blue-400">.enc</a></p>
+            </div>
+
+            <div class="bg-gray-700 rounded-lg p-6 flex-1">
+                <h3 class="text-xl font-semibold text-white mb-4">Decrypt Your Encrypted File</h3>
+                <div>
+                    <label for="decryptFile" class="text-gray-400">Select File to Decrypt</label>
+                    <div class="relative w-full mt-2">
+                        <input type="file" class="absolute top-0 left-0 opacity-0 w-full h-full" id="decryptFile">
+                        <label for="decryptFile" class="bg-gray-600 text-white py-3 px-4 block text-center rounded-lg border border-gray-500 cursor-pointer hover:bg-gray-500">Choose File</label>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="decryptKey" class="text-gray-400">Enter Decryption Key (128-bit)</label>
+                    <input type="text" id="decryptKey" placeholder="Enter Key" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div>
+                <div class="mt-4">
+                    <label for="decryptIV" class="text-gray-400">Enter Initialization Vector (IV)</label>
+                    <input type="text" id="decryptIV" placeholder="Enter IV" class="bg-gray-600 text-white p-3 mt-2 rounded-lg border border-gray-500 w-full placeholder-gray-400">
+                </div>
+                <button id="decryptButton" class="bg-red-600 text-white py-3 px-6 rounded-lg mt-6 w-full hover:bg-red-500">Decrypt</button>
+                <p class="mt-4 text-center text-gray-300">Download Decrypted File: <a id="decrypt-download-link" href="#" class="text-blue-400">.dec</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-gray-400 py-4 text-center mt-6">
+        <p>&copy; 2025 AES Encryption Framework | All Rights Reserved.</p>
+    </footer>
+
+</body>
+
+</html>
