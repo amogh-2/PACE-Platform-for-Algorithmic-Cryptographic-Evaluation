@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
 import base64
-import json
 from flask_cors import CORS
 from enc_dec_script.encrypt_aes_cbc import encrypt_file_aes_cbc, decrypt_file_aes_cbc
 from enc_dec_script.encrypt_aes_cbc_256 import encrypt_file_aes_cbc_256, decrypt_file_aes_cbc_256
@@ -15,7 +14,7 @@ from processor_page_script.aes_256_cbc import run_aes_256_cbc_benchmark
 from processor_page_script.aes_256_gcm import run_aes_256_gcm_benchmark
 from processor_page_script.chacha20 import run_chacha20_benchmark
 from processor_page_script.chacha20_poly1305 import run_chacha20_poly1305_benchmark
-from datetime import datetime
+from datetime import datetime  # noqa: F401
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 CORS(app)
